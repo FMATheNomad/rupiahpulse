@@ -22,7 +22,7 @@ export default function HealthIndexPage() {
   return (
     <>
       <Helmet>
-        <title>{t('health.title')}: {score}/100 ({category}) | Rupiah Pulse</title>
+        <title>{`${t('health.title')}: ${score}/100 (${category || 'Neutral'}) | Rupiah Pulse`}</title>
         <link rel="canonical" href="https://rupiahpulse.com/health-index" />
       </Helmet>
 

@@ -23,7 +23,7 @@ export default function PredictionPage() {
   return (
     <>
       <Helmet>
-        <title>{t('prediction.title')} | Rupiah Pulse</title>
+        <title>{`${t('prediction.title')} | Rupiah Pulse`}</title>
         <link rel="canonical" href="https://rupiahpulse.com/prediction" />
       </Helmet>
 

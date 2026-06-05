@@ -57,7 +57,7 @@ export default function NewsPage() {
   return (
     <>
       <Helmet>
-        <title>{t('news.title')} | Rupiah Pulse</title>
+        <title>{`${t('news.title')} | Rupiah Pulse`}</title>
         <meta name="description" content={t('news.subtitle')} />
         <link rel="canonical" href="https://rupiahpulse.com/news" />
       </Helmet>

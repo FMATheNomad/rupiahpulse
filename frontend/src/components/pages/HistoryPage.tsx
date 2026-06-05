@@ -21,7 +21,7 @@ export default function HistoryPage() {
   return (
     <>
       <Helmet>
-        <title>{t('history.title')} | Rupiah Pulse</title>
+        <title>{`${t('history.title')} | Rupiah Pulse`}</title>
         <link rel="canonical" href="https://rupiahpulse.com/history" />
       </Helmet>
 

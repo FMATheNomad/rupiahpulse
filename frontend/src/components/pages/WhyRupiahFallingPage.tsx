@@ -13,7 +13,7 @@ export default function WhyRupiahFallingPage() {
   return (
     <>
       <Helmet>
-        <title>{t('analysis.title')} | Rupiah Pulse</title>
+        <title>{`${t('analysis.title')} | Rupiah Pulse`}</title>
         <link rel="canonical" href="https://rupiahpulse.com/why-rupiah-falling" />
       </Helmet>
 
