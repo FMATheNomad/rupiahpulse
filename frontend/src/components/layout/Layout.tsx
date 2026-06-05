@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import Navbar, { Footer } from './Navbar'
 import ErrorBoundary from './ErrorBoundary'
@@ -12,26 +11,6 @@ export default function Layout({ children }: LayoutProps) {
   const { locale } = useLang()
   const url = typeof window !== 'undefined' ? window.location.href : 'https://rupiahpulse.com'
   const domain = 'rupiahpulse.com'
-
-  useEffect(() => {
-    const script = document.createElement('script')
-    script.src = 'https://edge-cdn.trakteer.id/js/embed/trbtn.min.js?v=14-05-2025'
-    script.async = true
-    script.onload = () => {
-      if (typeof window !== 'undefined' && (window as any).trbtn) {
-        const trbtnId = (window as any).trbtn.init(
-          'Dukung Saya di Trakteer',
-          '#be1e2d',
-          'https://trakteer.id/farizma',
-          'https://edge-cdn.trakteer.id/images/embed/trbtn-icon.png?v=14-05-2025',
-          '40',
-        )
-        ;(window as any).trbtn.draw(trbtnId)
-      }
-    }
-    document.body.appendChild(script)
-    return () => { document.body.removeChild(script) }
-  }, [])
 
   return (
     <div className="min-h-screen flex flex-col">
