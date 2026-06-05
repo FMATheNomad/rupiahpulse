@@ -22,6 +22,10 @@ export default function HistoryPage() {
     <>
       <Helmet>
         <title>{`${t('history.title')} | Rupiah Pulse`}</title>
+        <meta name="description" content="Data historis USD/IDR dan Rupiah Health Index. Lihat tren kurs rupiah 5 tahun terakhir dalam bentuk chart interaktif." />
+        <meta name="keywords" content="history rupiah, data historis usd idr, kurs rupiah history, exchange rate history, tren rupiah" />
+        <meta property="og:title" content={`${t('history.title')} — Rupiah Pulse`} />
+        <meta property="og:description" content="Data historis lengkap pergerakan USD/IDR dan Health Index." />
         <link rel="canonical" href="https://rupiahpulse.com/history" />
       </Helmet>
 

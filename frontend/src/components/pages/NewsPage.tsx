@@ -59,7 +59,30 @@ export default function NewsPage() {
       <Helmet>
         <title>{`${t('news.title')} | Rupiah Pulse`}</title>
         <meta name="description" content={t('news.subtitle')} />
+        <meta name="keywords" content="berita rupiah, news rupiah, ekonomi indonesia, sentimen pasar, gdelt indonesia" />
+        <meta property="og:title" content={`${t('news.title')} — Rupiah Pulse`} />
+        <meta property="og:description" content={t('news.subtitle')} />
         <link rel="canonical" href="https://rupiahpulse.com/news" />
+
+        {articles.length > 0 && (
+          <script type="application/ld+json">
+            {JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'ItemList',
+              itemListElement: articles.slice(0, 10).map((a: any, i: number) => ({
+                '@type': 'ListItem',
+                position: i + 1,
+                item: {
+                  '@type': 'NewsArticle',
+                  headline: a.title,
+                  url: a.url || `https://rupiahpulse.com/news#${a.id}`,
+                  author: { '@type': 'Organization', name: a.source || 'Rupiah Pulse' },
+                  datePublished: a.published_at || undefined,
+                },
+              })),
+            })}
+          </script>
+        )}
       </Helmet>
 
       <section className="space-y-6">

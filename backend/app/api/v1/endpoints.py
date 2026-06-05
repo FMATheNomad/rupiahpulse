@@ -261,15 +261,25 @@ async def get_news(
 
 
 import time as time_module
+from typing import Annotated
 
+from fastapi import Header
+
+from app.core.config import settings
 from app.services.prediction import get_prediction
 
 _last_refresh_time: float = 0.0
 _REFRESH_COOLDOWN_SECONDS = 60
 
 
+def verify_api_key(x_api_key: str = Header(default="")):
+    if settings.APP_ENV != "local" and settings.has_api_key and x_api_key != settings.API_KEY:
+        raise HTTPException(status_code=401, detail="Invalid API key")
+    return x_api_key
+
+
 @router.post("/news/refresh")
-async def refresh_news():
+async def refresh_news(api_key: Annotated[str, Depends(verify_api_key)] = ""):
     global _last_refresh_time
     now = time_module.time()
     elapsed = now - _last_refresh_time

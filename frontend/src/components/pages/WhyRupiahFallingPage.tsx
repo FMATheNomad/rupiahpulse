@@ -14,7 +14,24 @@ export default function WhyRupiahFallingPage() {
     <>
       <Helmet>
         <title>{`${t('analysis.title')} | Rupiah Pulse`}</title>
+        <meta name="description" content="Analisis mendalam penyebab Rupiah melemah atau menguat terhadap Dolar AS. Faktor DXY, harga minyak, inflasi Indonesia, cadangan devisa, neraca perdagangan, dan sentimen pasar." />
+        <meta name="keywords" content="kenapa rupiah melemah, penyebab rupiah turun, analisis rupiah, why rupiah falling, rupiah weakening factors" />
+        <meta property="og:title" content={`${t('analysis.title')} — Rupiah Pulse`} />
+        <meta property="og:description" content="Analisis lengkap faktor-faktor yang mempengaruhi pergerakan Rupiah terhadap Dolar AS." />
         <link rel="canonical" href="https://rupiahpulse.com/why-rupiah-falling" />
+
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: 'Analisis Pergerakan Rupiah',
+            description: 'Penjelasan lengkap faktor-faktor yang mempengaruhi Rupiah terhadap Dolar AS',
+            about: {
+              '@type': 'ExchangeRateSpecification',
+              currency: 'IDR',
+            },
+          })}
+        </script>
       </Helmet>
 
       <section className="space-y-6">

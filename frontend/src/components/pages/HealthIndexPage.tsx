@@ -19,11 +19,30 @@ export default function HealthIndexPage() {
 
   if (healthError) return <ErrorState message={`${t('error.load')} Health Index`} />
 
+  const descH = `Rupiah Health Index: ${score}/100 (${category}). Analisis lengkap DXY, Oil, Inflasi, Cadangan Devisa, Neraca Perdagangan, Sentimen Pasar, dan USD/IDR.`
+
   return (
     <>
       <Helmet>
         <title>{`${t('health.title')}: ${score}/100 (${category || 'Neutral'}) | Rupiah Pulse`}</title>
+        <meta name="description" content={descH} />
+        <meta name="keywords" content="rupiah health index, kesehatan rupiah, indeks rupiah, usd idr analysis" />
+        <meta property="og:title" content={`Rupiah Health Index: ${score}/100 (${category})`} />
+        <meta property="og:description" content={descH} />
         <link rel="canonical" href="https://rupiahpulse.com/health-index" />
+
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FinancialProduct',
+            name: 'Rupiah Health Index',
+            description: `Composite index measuring Rupiah health: ${score}/100 (${category})`,
+            offers: {
+              '@type': 'AggregateOffer',
+              priceCurrency: 'IDR',
+            },
+          })}
+        </script>
       </Helmet>
 
       <section className="space-y-6">

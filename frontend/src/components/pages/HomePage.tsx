@@ -28,11 +28,77 @@ export default function HomePage() {
     return <ErrorState message={`${t('error.load')}. ${t('error.generic')}`} />
   }
 
+  const desc = `USD/IDR hari ini Rp ${Number(rate || 18000).toLocaleString('id-ID')} — Health Index ${score}/100 (${category}). Pantau kesehatan Rupiah secara real-time. Analisis DXY, inflasi, minyak, dan sentimen pasar.`
+  const keywords = 'rupiah, usd idr, kurs rupiah, dollar rupiah, rupiah melemah, rupiah menguat, indonesia exchange rate, nilai tukar rupiah, kesehatan rupiah'
+
   return (
     <>
       <Helmet>
         <title>{seoTitle}</title>
+        <meta name="description" content={desc} />
+        <meta name="keywords" content={keywords} />
+        <meta property="og:title" content={seoTitle} />
+        <meta property="og:description" content={desc} />
+        <meta name="twitter:title" content={seoTitle} />
+        <meta name="twitter:description" content={desc} />
         <link rel="canonical" href="https://rupiahpulse.com" />
+
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ExchangeRateSpecification',
+            name: 'USD/IDR Exchange Rate',
+            description: 'Real-time USD to IDR exchange rate and Rupiah Health Index',
+            currency: 'IDR',
+            currentExchangeRate: {
+              '@type': 'UnitPriceSpecification',
+              price: Number(rate || 18037),
+              currency: 'IDR',
+            },
+            additionalType: 'https://schema.org/FinancialProduct',
+          })}
+        </script>
+
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: [
+              {
+                '@type': 'Question',
+                name: 'Mengapa Rupiah melemah hari ini?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: health?.explanation ? health.explanation.substring(0, 200) : 'Rupiah dipengaruhi oleh DXY, harga minyak, inflasi, dan sentimen pasar global.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Berapa kurs USD/IDR hari ini?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: `Kurs USD/IDR hari ini berada di Rp ${Number(rate || 18037).toLocaleString('id-ID')} per 1 Dolar AS.`,
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Apa itu Rupiah Health Index?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Indeks yang mengukur kesehatan Rupiah terhadap Dolar AS berdasarkan 7 faktor: DXY, Oil, Inflasi, Cadangan Devisa, Neraca Perdagangan, Sentimen Pasar, dan Nilai Tukar USD/IDR.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Apakah Rupiah akan menguat?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Berdasarkan analisis fundamental, pergerakan Rupiah dipengaruhi oleh kebijakan The Fed, harga komoditas, dan fundamental ekonomi Indonesia. Cek halaman Prediksi untuk proyeksi terkini.',
+                },
+              },
+            ],
+          })}
+        </script>
       </Helmet>
 
       <section className="space-y-6">

@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     APP_ENV: str = "local"
     LOG_LEVEL: str = "DEBUG"
 
-    DATABASE_URL: str = ""
+    DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/rupiahpulse"
 
     CORS_ORIGINS: str = ""
 
@@ -25,6 +25,11 @@ class Settings(BaseSettings):
 
     CACHE_TTL_SECONDS_EXPLANATION: int = 300
     CACHE_TTL_SECONDS_NEWS: int = 600
+    API_KEY: str = ""
+
+    @property
+    def has_api_key(self) -> bool:
+        return bool(self.API_KEY)
 
     @model_validator(mode="after")
     def validate_production(self):

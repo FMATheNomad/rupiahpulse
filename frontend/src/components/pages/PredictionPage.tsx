@@ -24,6 +24,10 @@ export default function PredictionPage() {
     <>
       <Helmet>
         <title>{`${t('prediction.title')} | Rupiah Pulse`}</title>
+        <meta name="description" content="Prediksi pergerakan Rupiah terhadap USD berdasarkan tren historis, sentimen pasar, dan analisis teknikal. Proyeksi 1 bulan, 3 bulan, 6 bulan, 1 tahun." />
+        <meta name="keywords" content="prediksi rupiah, forecast usd idr, proyeksi kurs, rupiah prediction, analisis teknikal" />
+        <meta property="og:title" content={`${t('prediction.title')} — Rupiah Pulse`} />
+        <meta property="og:description" content="Prediksi pergerakan Rupiah berdasarkan data real-time dan analisis multi-horizon." />
         <link rel="canonical" href="https://rupiahpulse.com/prediction" />
       </Helmet>
 
