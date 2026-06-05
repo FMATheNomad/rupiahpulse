@@ -211,12 +211,59 @@ npm test
 
 ## 🌐 Deployment (Railway)
 
-1. Create a Railway project + PostgreSQL plugin
-2. **Web service**: Point to `backend/Dockerfile`, port `8000`, healthcheck `/health`
-3. **Worker service**: Point to `backend/Dockerfile.worker`, override CMD to `python -m app.jobs.runner`
-4. **Frontend**: Point to `frontend/Dockerfile`, port `80`, set `VITE_API_BASE_URL` to backend URL
-5. Set all required environment variables
-6. Run `alembic upgrade head` then `python seed.py` via Railway Shell
+### One-Command Deploy (Automated)
+
+```bash
+chmod +x railway-deploy.sh
+./railway-deploy.sh
+```
+
+The script will:
+1. Login to Railway via CLI
+2. Create project + PostgreSQL plugin
+3. Create all 3 services (api, worker, frontend) with correct configs
+4. Set all environment variables
+5. Trigger deployment
+
+Post-deploy steps (via Railway Shell):
+```bash
+cd backend && pip install -r requirements.txt && PYTHONPATH=. alembic upgrade head && python seed.py
+```
+
+### Manual Deploy (3 Services from 1 Repo)
+
+Railway detects services via `railway.json` in subdirectories:
+
+| Service | Root Dir | Config | Port | Healthcheck |
+|---------|----------|--------|------|-------------|
+| **API** | `backend/` | `railway.json` | `8000` | `/health` |
+| **Worker** | `backend/` | `railway.worker.json` | — | — |
+| **Frontend** | `frontend/` | `railway.json` | `80` | — |
+
+**Steps:**
+1. Connect GitHub repo `FMATheNomad/rupiahpulse` to Railway
+2. Add PostgreSQL plugin
+3. Railway auto-detects 3 services from subdirectory `railway.json` files
+4. For **Worker**: override start command to `python -m app.jobs.runner`
+5. Set environment variables for each service
+6. Run migrations + seed via Railway Shell:
+   ```bash
+   cd backend && pip install fastapi uvicorn sqlalchemy asyncpg psycopg2-binary alembic pydantic pydantic-settings httpx apscheduler python-dotenv structlog orjson && PYTHONPATH=. alembic upgrade head && python seed.py
+   ```
+
+### Required Environment Variables
+
+| Variable | Required | Services |
+|----------|----------|----------|
+| `APP_ENV` | ✅ | api, worker |
+| `DATABASE_URL` | ✅ (auto by Railway) | api, worker |
+| `CORS_ORIGINS` | ✅ | api |
+| `LOG_LEVEL` | ✅ | api, worker |
+| `DATA_PROVIDER_TIMEOUT_SECONDS` | ✅ | api, worker |
+| `GDELT_QUERY` | ✅ | worker |
+| `CACHE_TTL_SECONDS_EXPLANATION` | ✅ | api, worker |
+| `CACHE_TTL_SECONDS_NEWS` | ✅ | api, worker |
+| `VITE_API_BASE_URL` | ✅ | frontend |
 
 ---
 
