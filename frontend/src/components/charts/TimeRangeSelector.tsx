@@ -1,13 +1,14 @@
+import { useLang } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 
 const RANGES = [
-  { key: '1d', label: '1H' },
-  { key: '5d', label: '5H' },
-  { key: '1m', label: '1M' },
-  { key: '3m', label: '3M' },
-  { key: '1y', label: '1Y' },
-  { key: '5y', label: '5Y' },
-  { key: 'max', label: 'Max' },
+  { key: '1d', labelKey: 'chart.range-1h' },
+  { key: '5d', labelKey: 'chart.range-5h' },
+  { key: '1m', labelKey: 'chart.range-1m' },
+  { key: '3m', labelKey: 'chart.range-3m' },
+  { key: '1y', labelKey: 'chart.range-1y' },
+  { key: '5y', labelKey: 'chart.range-5y' },
+  { key: 'max', labelKey: 'chart.range-max' },
 ]
 
 interface TimeRangeSelectorProps {
@@ -16,6 +17,8 @@ interface TimeRangeSelectorProps {
 }
 
 export default function TimeRangeSelector({ value, onChange }: TimeRangeSelectorProps) {
+  const { t } = useLang()
+
   return (
     <div className="flex gap-1 bg-muted rounded-lg p-1">
       {RANGES.map((r) => (
@@ -29,7 +32,7 @@ export default function TimeRangeSelector({ value, onChange }: TimeRangeSelector
               : 'text-muted-foreground hover:text-foreground',
           )}
         >
-          {r.label}
+          {t(r.labelKey)}
         </button>
       ))}
     </div>

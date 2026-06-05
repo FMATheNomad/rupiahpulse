@@ -1,11 +1,13 @@
 import { Helmet } from 'react-helmet-async'
 import { useHealthIndex, useHistory } from '@/hooks/useApi'
-import { Card, CardHeader, CardTitle, CardContent, Badge, Spinner, ErrorState } from '@/components/ui'
+import { useLang } from '@/lib/i18n'
+import { Card, CardHeader, CardTitle, CardContent, ErrorState } from '@/components/ui'
 import GaugeChart from '@/components/charts/GaugeChart'
 import FactorBreakdownChart from '@/components/charts/FactorBreakdownChart'
 import TimeSeriesChart from '@/components/charts/TimeSeriesChart'
 
 export default function HealthIndexPage() {
+  const { t } = useLang()
   const { data: healthData, isLoading: healthLoading, error: healthError } = useHealthIndex()
   const { data: historyData, isLoading: historyLoading, error: historyError } = useHistory()
 
@@ -15,30 +17,19 @@ export default function HealthIndexPage() {
   const category = health?.category || 'Neutral'
   const history = historyData?.data || []
 
-  const seoTitle = `Indeks Kesehatan Rupiah: ${score}/100 (${category}) | Rupiah Pulse`
-
-  if (healthError) return <ErrorState message="Gagal memuat data health index" />
+  if (healthError) return <ErrorState message={`${t('error.load')} Health Index`} />
 
   return (
     <>
       <Helmet>
-        <title>{seoTitle}</title>
-        <meta name="description" content={`Detail Indeks Kesehatan Rupiah hari ini: ${score}/100 - ${category}`} />
+        <title>{t('health.title')}: {score}/100 ({category}) | Rupiah Pulse</title>
         <link rel="canonical" href="https://rupiahpulse.com/health-index" />
-        <script type="application/ld+json">
-          {JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'FinancialProduct',
-            name: 'Rupiah Health Index',
-            description: 'Composite index measuring Rupiah health against USD',
-          })}
-        </script>
       </Helmet>
 
       <section className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold">Health Index</h1>
-          <p className="text-muted-foreground">Indeks Kesehatan Rupiah terhadap USD</p>
+          <h1 className="text-3xl font-bold">{t('health.title')}</h1>
+          <p className="text-muted-foreground">{t('health.subtitle')}</p>
         </div>
 
         {healthLoading ? (
@@ -52,7 +43,6 @@ export default function HealthIndexPage() {
               <GaugeChart score={score} loading={false} />
               <FactorBreakdownChart factors={factors} loading={false} />
             </div>
-
             <div className="grid grid-cols-2 md:grid-cols-7 gap-3">
               {factors.map((f: { factor: string; subscore: number }) => (
                 <Card key={f.factor}>
@@ -67,22 +57,14 @@ export default function HealthIndexPage() {
         )}
 
         <div>
-          <h2 className="text-xl font-semibold mb-4">Riwayat Health Index</h2>
-          {historyError ? (
-            <Card>
-              <CardContent className="py-8 text-center text-muted-foreground">
-                Gagal memuat riwayat data
-              </CardContent>
-            </Card>
-          ) : (
-            <TimeSeriesChart
-              data={history}
-              type="score"
-              title="Skor Health Index dari Waktu ke Waktu"
-              loading={historyLoading}
-              error={!!historyError}
-            />
-          )}
+          <h2 className="text-xl font-semibold mb-4">{t('health.history')}</h2>
+          <TimeSeriesChart
+            data={history}
+            type="score"
+            title={t('health.score-label')}
+            loading={historyLoading}
+            error={!!historyError}
+          />
         </div>
       </section>
     </>

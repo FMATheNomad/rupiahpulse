@@ -2,12 +2,14 @@ import { useState, useEffect, useCallback } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useQueryClient } from '@tanstack/react-query'
 import { useNews, useRefreshNews } from '@/hooks/useApi'
+import { useLang } from '@/lib/i18n'
 import { Card, CardContent, Badge, ErrorState, Spinner } from '@/components/ui'
 
 const PAGE_SIZE = 10
 const COOLDOWN_SECONDS = 60
 
 export default function NewsPage() {
+  const { t } = useLang()
   const [offset, setOffset] = useState(0)
   const [cooldown, setCooldown] = useState(0)
   const queryClient = useQueryClient()
@@ -45,29 +47,29 @@ export default function NewsPage() {
 
   const btnDisabled = refreshMutation.isPending || cooldown > 0
   const btnLabel = refreshMutation.isPending
-    ? 'Memperbarui...'
+    ? t('news.refreshing')
     : cooldown > 0
-      ? `Tunggu ${cooldown}s`
-      : 'Refresh'
+      ? t('news.wait', { s: cooldown })
+      : t('news.refresh')
 
-  if (error) return <ErrorState message="Gagal memuat berita" />
+  if (error) return <ErrorState message={`${t('error.load')} ${t('news.title')}`} />
 
   return (
     <>
       <Helmet>
-        <title>Berita Terkait Rupiah | Rupiah Pulse</title>
-        <meta name="description" content="Kumpulan berita dan sentimen pasar terkait Rupiah dan ekonomi Indonesia." />
+        <title>{t('news.title')} | Rupiah Pulse</title>
+        <meta name="description" content={t('news.subtitle')} />
         <link rel="canonical" href="https://rupiahpulse.com/news" />
       </Helmet>
 
       <section className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">Berita & Sentimen</h1>
+            <h1 className="text-3xl font-bold">{t('news.title')}</h1>
             <p className="text-muted-foreground">
               {total > 0
-                ? `${total} berita terkait Rupiah dan ekonomi Indonesia`
-                : 'Berita terbaru terkait Rupiah dan ekonomi Indonesia dari GDELT'}
+                ? `${total} ${t('news.subtitle').toLowerCase()}`
+                : t('news.subtitle')}
             </p>
           </div>
           <button
@@ -90,9 +92,9 @@ export default function NewsPage() {
           <Card>
             <CardContent className="py-4 text-center">
               <p className={`text-sm font-medium ${
-                refreshMutation.data.data?.status === 'ok' ? 'text-green-600' :
-                refreshMutation.data.data?.status === 'cooldown' ? 'text-yellow-600' :
-                'text-red-600'
+                refreshMutation.data.data?.status === 'ok' ? 'text-green-600 dark:text-green-400' :
+                refreshMutation.data.data?.status === 'cooldown' ? 'text-yellow-600 dark:text-yellow-400' :
+                'text-red-600 dark:text-red-400'
               }`}>
                 {refreshMutation.data.data?.message || ''}
               </p>
@@ -116,7 +118,7 @@ export default function NewsPage() {
         ) : articles.length === 0 ? (
           <Card>
             <CardContent className="py-12 text-center text-muted-foreground">
-              Belum ada berita tersedia. Klik Refresh untuk mengambil berita terbaru.
+              {t('news.empty')}
             </CardContent>
           </Card>
         ) : (
@@ -133,23 +135,18 @@ export default function NewsPage() {
                       }>
                         {article.sentiment_score
                           ? `Sentimen: ${article.sentiment_score >= 0 ? '+' : ''}${article.sentiment_score.toFixed(2)}`
-                          : 'Netral'}
+                          : t('sentiment.neutral')}
                       </Badge>
                       {article.source && (
                         <span className="text-xs text-muted-foreground">{article.source}</span>
                       )}
                     </div>
-                    <a
-                      href={article.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block mt-1 group"
-                    >
+                    <a href={article.url} target="_blank" rel="noopener noreferrer" className="block mt-1 group">
                       <h3 className="font-medium leading-tight group-hover:text-primary transition-colors">{article.title}</h3>
                     </a>
                     {article.published_at && (
                       <p className="text-xs text-muted-foreground mt-2">
-                        {new Date(article.published_at).toLocaleString('id-ID')}
+                        {new Date(article.published_at).toLocaleString()}
                       </p>
                     )}
                   </CardContent>
@@ -159,20 +156,24 @@ export default function NewsPage() {
 
             <div className="flex items-center justify-between pt-2">
               <p className="text-sm text-muted-foreground">
-                Menampilkan {offset + 1}-{Math.min(offset + PAGE_SIZE, total)} dari {total} berita
+                {t('news.showing', {
+                  start: offset + 1,
+                  end: Math.min(offset + PAGE_SIZE, total),
+                  total,
+                })}
               </p>
               <div className="flex gap-2">
                 {offset > 0 && (
                   <button onClick={() => setOffset((p) => Math.max(0, p - PAGE_SIZE))}
                     className="px-4 py-2 rounded-lg border bg-card text-sm font-medium hover:bg-accent transition-colors">
-                    Sebelumnya
+                    {t('news.prev')}
                   </button>
                 )}
                 {hasMore && (
                   <button onClick={() => setOffset((p) => p + PAGE_SIZE)}
                     disabled={isFetching}
                     className="px-4 py-2 rounded-lg border bg-card text-sm font-medium hover:bg-accent transition-colors disabled:opacity-50">
-                    {isFetching ? <Spinner className="inline h-4 w-4" /> : 'Muat lebih banyak'}
+                    {isFetching ? <Spinner className="inline h-4 w-4" /> : t('news.load-more')}
                   </button>
                 )}
               </div>

@@ -1,40 +1,49 @@
 import { Link, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/utils'
+import { useLang } from '@/lib/i18n'
+import { ThemeToggle, LangToggle } from './ToggleBar'
 
 const navItems = [
-  { path: '/', label: 'Beranda' },
-  { path: '/health-index', label: 'Health Index' },
-  { path: '/prediction', label: 'Prediksi' },
-  { path: '/history', label: 'Riwayat' },
-  { path: '/why-rupiah-falling', label: 'Analisis' },
-  { path: '/news', label: 'Berita' },
+  { path: '/', labelKey: 'nav.beranda' },
+  { path: '/health-index', labelKey: 'nav.health-index' },
+  { path: '/prediction', labelKey: 'nav.prediksi' },
+  { path: '/history', labelKey: 'nav.riwayat' },
+  { path: '/why-rupiah-falling', labelKey: 'nav.analisis' },
+  { path: '/news', labelKey: 'nav.berita' },
 ]
 
 export default function Navbar() {
   const location = useLocation()
+  const { t } = useLang()
 
   return (
-    <nav className="border-b bg-white sticky top-0 z-50">
+    <nav className="border-b bg-background sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          <Link to="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-primary">Rupiah Pulse</span>
+        <div className="flex justify-between h-16 items-center gap-2">
+          <Link to="/" className="flex items-center space-x-2 shrink-0">
+            <span className="text-xl font-bold text-primary">{t('nav.rupiah-pulse')}</span>
           </Link>
-          <div className="hidden md:flex space-x-1">
+
+          <div className="hidden md:flex items-center space-x-1 flex-1 justify-center">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
                 className={cn(
-                  'px-3 py-2 rounded-md text-sm font-medium transition-colors',
+                  'px-3 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap',
                   location.pathname === item.path
                     ? 'bg-primary/10 text-primary'
                     : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
                 )}
               >
-                {item.label}
+                {t(item.labelKey)}
               </Link>
             ))}
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <LangToggle />
+            <ThemeToggle />
           </div>
         </div>
       </div>
@@ -43,11 +52,12 @@ export default function Navbar() {
 }
 
 export function Footer() {
+  const { t } = useLang()
   return (
     <footer className="border-t mt-12 py-8">
       <div className="max-w-7xl mx-auto px-4 text-center text-sm text-muted-foreground">
-        <p>Rupiah Pulse &copy; {new Date().getFullYear()} &mdash; Indeks Kesehatan Rupiah Real-time</p>
-        <p className="mt-1">Data diperbarui setiap 5 menit. Sumber: open.er-api.com, Yahoo Finance, Stooq, World Bank, GDELT.</p>
+        <p>Rupiah Pulse &copy; {new Date().getFullYear()} &mdash; {t('nav.health-index')}</p>
+        <p className="mt-1">{t('footer.data-sources')}</p>
       </div>
     </footer>
   )
