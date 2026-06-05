@@ -141,9 +141,13 @@ export default function NewsPage() {
                         <span className="text-xs text-muted-foreground">{article.source}</span>
                       )}
                     </div>
-                    <a href={article.url} target="_blank" rel="noopener noreferrer" className="block mt-1 group">
-                      <h3 className="font-medium leading-tight group-hover:text-primary transition-colors">{article.title}</h3>
-                    </a>
+                    {article.url && !article.url.includes('example.') ? (
+                      <a href={article.url} target="_blank" rel="noopener noreferrer" className="block mt-1 group">
+                        <h3 className="font-medium leading-tight group-hover:text-primary transition-colors">{article.title}</h3>
+                      </a>
+                    ) : (
+                      <h3 className="font-medium leading-tight mt-1">{article.title}</h3>
+                    )}
                     {article.published_at && (
                       <p className="text-xs text-muted-foreground mt-2">
                         {new Date(article.published_at).toLocaleString()}

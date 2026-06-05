@@ -1,8 +1,23 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { API_BASE } from '@/lib/utils'
 
+function getLang(): string {
+  try {
+    const saved = localStorage.getItem('rupiahpulse-lang')
+    if (!saved || saved === 'auto') {
+      return navigator.language?.startsWith('id') ? 'id' : 'en'
+    }
+    return saved
+  } catch {
+    return 'id'
+  }
+}
+
 async function fetchJson(url: string) {
-  const res = await fetch(`${API_BASE}${url}`)
+  const lang = getLang()
+  const sep = url.includes('?') ? '&' : '?'
+  const langUrl = url.includes('lang=') ? url : `${url}${url.includes('?') ? '&' : '?'}lang=${lang}`
+  const res = await fetch(`${API_BASE}${langUrl}`)
   if (!res.ok) throw new Error(`API error: ${res.status}`)
   return res.json()
 }

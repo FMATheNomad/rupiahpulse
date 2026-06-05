@@ -35,7 +35,7 @@ def r_squared(data: list[tuple[float, float]], slope: float, intercept: float) -
     return 1 - ss_res / ss_tot
 
 
-async def get_prediction(db: AsyncSession) -> dict:
+async def get_prediction(db: AsyncSession, lang: str = "id") -> dict:
     now = datetime.now(timezone.utc)
 
     # Get last 90 days of data for trend
@@ -84,28 +84,53 @@ async def get_prediction(db: AsyncSession) -> dict:
         }
 
     # Sentiment-based assessment
-    trend_direction = "melemah" if daily_change > 0 else "menguat"
+    is_en = lang == "en"
+    trend_direction = "weakening" if is_en else "melemah" if daily_change > 0 else "strengthening" if is_en else "menguat"
 
-    if trend_direction == "melemah":
-        if avg_sentiment > 0.2:
-            consensus = "neutral"
-            summary = "Sentimen positif tidak cukup kuat menahan pelemahan. Faktor fundamental dan eksternal masih mendominasi."
-        elif avg_sentiment < -0.2:
-            consensus = "bearish"
-            summary = "Tekanan pelemahan Rupiah diperkuat sentimen negatif. Ekspektasi pelemahan berlanjut."
-        else:
-            consensus = "bearish"
-            summary = "Tren pelemahan Rupiah berlanjut seiring faktor global dan domestik."
+    summaries = {
+        ("melemah", "positive"): (
+            "Sentimen positif tidak cukup kuat menahan pelemahan. Faktor fundamental dan eksternal masih mendominasi.",
+            "Positive sentiment is not strong enough to offset weakening. Fundamental and external factors still dominate.",
+        ),
+        ("melemah", "negative"): (
+            "Tekanan pelemahan Rupiah diperkuat sentimen negatif. Ekspektasi pelemahan berlanjut.",
+            "Weakening pressure reinforced by negative sentiment. Downtrend expected to continue.",
+        ),
+        ("melemah", "neutral"): (
+            "Tren pelemahan Rupiah berlanjut seiring faktor global dan domestik.",
+            "Rupiah weakening trend continues amid global and domestic factors.",
+        ),
+        ("menguat", "positive"): (
+            "Sentimen positif mendukung penguatan Rupiah. Aliran modal asing diperkirakan masuk.",
+            "Positive sentiment supports Rupiah strengthening. Foreign capital inflows expected.",
+        ),
+        ("menguat", "negative"): (
+            "Potensi penguatan terbatas karena sentimen negatif masih membayangi.",
+            "Strengthening potential limited as negative sentiment persists.",
+        ),
+        ("menguat", "neutral"): (
+            "Rupiah menunjukkan penguatan di tengah sentimen yang bervariasi.",
+            "Rupiah showing strength amid mixed sentiment.",
+        ),
+    }
+
+    if daily_change > 0:
+        trend_key = "melemah"
     else:
-        if avg_sentiment > 0.2:
-            consensus = "bullish"
-            summary = "Sentimen positif mendukung penguatan Rupiah. Aliran modal asing diperkirakan masuk."
-        elif avg_sentiment < -0.2:
-            consensus = "neutral"
-            summary = "Potensi penguatan terbatas karena sentimen negatif masih membayangi."
-        else:
-            consensus = "bullish"
-            summary = "Rupiah menunjukkan penguatan di tengah sentimen yang bervariasi."
+        trend_key = "menguat"
+
+    if avg_sentiment > 0.2:
+        sent_key = "positive"
+        consensus = "bullish" if trend_key == "menguat" else "neutral"
+    elif avg_sentiment < -0.2:
+        sent_key = "negative"
+        consensus = "bearish" if trend_key == "melemah" else "neutral"
+    else:
+        sent_key = "neutral"
+        consensus = "bearish" if trend_key == "melemah" else "bullish"
+
+    id_text, en_text = summaries.get((trend_key, sent_key), ("", ""))
+    summary = en_text if is_en else id_text
     r2_pct = round(r2 * 100, 1)
 
     return {

@@ -115,7 +115,7 @@ async def seed():
         ]:
             session.add(NewsCache(
                 article_id=str(uuid4()), title=title, source=source,
-                url=f"https://example.com/{uuid4()}",
+                url="",
                 published_at=now - timedelta(hours=random.randint(1, 48)),
                 sentiment_score=sentiment,
             ))

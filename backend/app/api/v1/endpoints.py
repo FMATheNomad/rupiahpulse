@@ -87,7 +87,7 @@ async def get_usd_idr_history(
     }
 
 
-async def compute_health_index(db: AsyncSession) -> HealthIndexResponse | None:
+async def compute_health_index(db: AsyncSession, lang: str = "id") -> HealthIndexResponse | None:
     currency_repo = CurrencyRepository(db)
     macro_repo = MacroRepository(db)
 
@@ -136,6 +136,7 @@ async def compute_health_index(db: AsyncSession) -> HealthIndexResponse | None:
         score, category, computed,
         float(latest_currency.change_24h_pct) if latest_currency.change_24h_pct else None,
         usd_idr_rate,
+        lang=lang,
     )
 
     factor_breakdowns = [
@@ -162,8 +163,11 @@ async def compute_health_index(db: AsyncSession) -> HealthIndexResponse | None:
 
 
 @router.get("/health-index")
-async def get_health_index(db: AsyncSession = Depends(get_db)):
-    result = await compute_health_index(db)
+async def get_health_index(
+    lang: str = Query("id"),
+    db: AsyncSession = Depends(get_db),
+):
+    result = await compute_health_index(db, lang=lang)
     if result is None:
         return {"data": None, "meta": {"message": "Insufficient data to compute health index"}}
     return {
@@ -225,8 +229,11 @@ async def get_explanation(db: AsyncSession = Depends(get_db)):
 
 
 @router.get("/prediction")
-async def prediction(db: AsyncSession = Depends(get_db)):
-    result = await get_prediction(db)
+async def prediction(
+    lang: str = Query("id"),
+    db: AsyncSession = Depends(get_db),
+):
+    result = await get_prediction(db, lang=lang)
     if "error" in result:
         raise HTTPException(status_code=400, detail=result["error"])
     return {"data": result, "meta": {"timestamp": datetime.now(timezone.utc).isoformat()}}
