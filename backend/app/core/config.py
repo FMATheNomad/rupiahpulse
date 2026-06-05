@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -14,7 +15,7 @@ class Settings(BaseSettings):
     APP_ENV: str = "local"
     LOG_LEVEL: str = "DEBUG"
 
-    DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/rupiahpulse"
+    DATABASE_URL: str = ""
 
     CORS_ORIGINS: str = ""
 
@@ -24,6 +25,15 @@ class Settings(BaseSettings):
 
     CACHE_TTL_SECONDS_EXPLANATION: int = 300
     CACHE_TTL_SECONDS_NEWS: int = 600
+
+    @model_validator(mode="after")
+    def validate_production(self):
+        if self.APP_ENV in ("staging", "production"):
+            if not self.DATABASE_URL or "localhost" in self.DATABASE_URL.lower():
+                raise ValueError("DATABASE_URL must point to remote DB in production")
+            if not self.CORS_ORIGINS.strip():
+                raise ValueError("CORS_ORIGINS is required in production")
+        return self
 
     def get_cors_origins(self) -> list[str]:
         origins = [o.strip() for o in self.CORS_ORIGINS.split(",") if o.strip()]

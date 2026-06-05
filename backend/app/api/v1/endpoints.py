@@ -33,7 +33,9 @@ RANGE_MAP = {
 
 
 def get_range_cutoff(range_str: str) -> datetime | None:
-    delta = RANGE_MAP.get(range_str)
+    if range_str not in RANGE_MAP:
+        raise HTTPException(status_code=400, detail=f"Invalid range: {range_str}. Valid: {', '.join(RANGE_MAP.keys())}")
+    delta = RANGE_MAP[range_str]
     if delta is None:
         return None
     return datetime.now(timezone.utc) - delta
@@ -288,8 +290,9 @@ async def refresh_news():
             error_msg = result.error or "Gagal mengambil berita"
             if "429" in error_msg:
                 return {"data": {"status": "rate_limited", "message": "Terlalu banyak permintaan. Silakan coba lagi dalam beberapa menit."}}
-            raise HTTPException(status_code=502, detail=error_msg)
+            raise HTTPException(status_code=502, detail="Refresh gagal")
         _last_refresh_time = time_module.time()
         return {"data": {"status": "ok", "message": "Berita berhasil diperbarui"}}
-    except Exception as e:
-        return {"data": {"status": "error", "message": f"Gagal refresh: {str(e)[:100]}"}}
+    except Exception:
+        logger.exception("news_refresh_failed")
+        return {"data": {"status": "error", "message": "Gagal refresh: terjadi kesalahan internal"}}

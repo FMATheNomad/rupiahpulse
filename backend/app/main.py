@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import sys
-
 import structlog
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -19,9 +17,7 @@ def create_app() -> FastAPI:
     setup_logging()
 
     if settings.APP_ENV in ("staging", "production") and not settings.CORS_ORIGINS.strip():
-        logger.error("cors_origins_empty", app_env=settings.APP_ENV)
-        print("FATAL: CORS_ORIGINS must be set in staging/production mode")
-        sys.exit(1)
+        raise RuntimeError("CORS_ORIGINS must be set in staging/production mode")
 
     app = FastAPI(
         title="Rupiah Health Index API",
@@ -33,14 +29,22 @@ def create_app() -> FastAPI:
     app.add_middleware(
         CORSMiddleware,
         allow_origins=origins,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_credentials=False,
+        allow_methods=["GET", "POST"],
+        allow_headers=["Content-Type", "Authorization"],
     )
+
+    @app.middleware("http")
+    async def log_requests(request: Request, call_next):
+        logger.info("request", method=request.method, path=request.url.path)
+        response = await call_next(request)
+        logger.info("response", status=response.status_code)
+        return response
 
     @app.exception_handler(Exception)
     async def global_exception_handler(request: Request, exc: Exception):
-        logger.error("unhandled_error", error=str(exc), path=str(request.url))
+        sanitized = str(exc).replace(str(settings.DATABASE_URL), "***REDACTED***")
+        logger.error("unhandled_error", error=sanitized, path=str(request.url))
         return JSONResponse(
             status_code=500,
             content={
@@ -66,9 +70,9 @@ def create_app() -> FastAPI:
         if not ok:
             return JSONResponse(
                 status_code=503,
-                content={"status": "unhealthy", "database": "disconnected"},
+                content={"status": "unhealthy"},
             )
-        return {"status": "healthy", "database": "connected"}
+        return {"status": "healthy"}
 
     app.include_router(v1_router, prefix="/api/v1")
 
