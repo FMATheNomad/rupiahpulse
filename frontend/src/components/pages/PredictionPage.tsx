@@ -15,8 +15,8 @@ export default function PredictionPage() {
 
   const periods = [
     { key: '1m', label: t('prediction.1m') },
+    { key: 'july', label: 'Juli 2026' },
     { key: '3m', label: t('prediction.3m') },
-    { key: '6m', label: t('prediction.6m') },
     { key: '1y', label: t('prediction.1y') },
   ]
 
@@ -73,9 +73,12 @@ export default function PredictionPage() {
                 <CardHeader><CardTitle className="text-sm">{t('prediction.current-trend')}</CardTitle></CardHeader>
                 <CardContent>
                   <p className="text-lg font-medium">
-                    {p.trend?.direction === 'melemah' ? t('gauge.weak') : t('gauge.strong')} {Math.abs(p.trend?.daily_change || 0).toFixed(0)}/hari
+                    {p.trend?.direction === 'weakening' || p.trend?.direction === 'melemah' ? t('gauge.weak') : t('gauge.strong')} {Math.abs(p.trend?.daily_change || 0).toFixed(0)}/hari
                   </p>
                   <p className="text-sm text-muted-foreground mt-1">{t('prediction.accuracy')}: {p.trend?.r_squared}%</p>
+                  {p.trend?.acceleration > 0 && (
+                    <p className="text-xs text-red-500 mt-1">Akselerasi: +{p.trend.acceleration.toFixed(2)}/hari²</p>
+                  )}
                 </CardContent>
               </Card>
 
