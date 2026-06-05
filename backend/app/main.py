@@ -55,6 +55,10 @@ def create_app() -> FastAPI:
 
     @app.get("/health")
     async def health():
+        return {"status": "healthy"}
+
+    @app.get("/health/db")
+    async def health_db():
         ok = False
         try:
             async with async_session_factory() as session:
@@ -67,9 +71,9 @@ def create_app() -> FastAPI:
         if not ok:
             return JSONResponse(
                 status_code=503,
-                content={"status": "unhealthy"},
+                content={"status": "unhealthy", "component": "database"},
             )
-        return {"status": "healthy"}
+        return {"status": "healthy", "component": "database"}
 
     app.include_router(v1_router, prefix="/api/v1")
 
