@@ -15,7 +15,8 @@ export default function GaugeChart({ score, loading }: GaugeChartProps) {
   if (loading) return <Skeleton className="h-[280px] w-full rounded-lg" />
 
   const categoryColor = score >= 70 ? '#16a34a' : score >= 40 ? '#ca8a04' : '#dc2626'
-  const categoryLabel = score >= 70 ? t('gauge.strong') : score >= 40 ? t('gauge.neutral') : t('gauge.weak')
+  const rawLabel = score >= 70 ? 'Strong' : score >= 40 ? 'Neutral' : 'Weak'
+  const categoryLabel = t('gauge.' + rawLabel.toLowerCase()) || rawLabel
 
   const option = {
     backgroundColor: 'transparent',

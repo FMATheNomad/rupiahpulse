@@ -76,7 +76,7 @@ export default function HomePage() {
               {healthLoading ? <Spinner /> : (
                 <>
                   <p className="text-lg font-semibold">
-                    {t('status.rupiah', { category: catLabel })}
+                    Rupiah {catLabel || 'Neutral'}
                   </p>
                 </>
               )}
