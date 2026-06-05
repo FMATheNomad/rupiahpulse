@@ -13,6 +13,7 @@ export default function GaugeChart({ score, loading }: GaugeChartProps) {
   const categoryLabel = score >= 70 ? 'Strong' : score >= 40 ? 'Neutral' : 'Weak'
 
   const option = {
+    backgroundColor: 'transparent',
     series: [{
       type: 'gauge' as const,
       startAngle: 200,
@@ -41,10 +42,10 @@ export default function GaugeChart({ score, loading }: GaugeChartProps) {
       detail: {
         offsetCenter: [0, '60%'],
         valueAnimation: true,
-        formatter: `{value}\n{category}`,
+        formatter: `{value}\n{name}`,
         rich: {
           value: { fontSize: 36, fontWeight: 'bold', color: categoryColor },
-          category: { fontSize: 16, color: '#6b7280', padding: [8, 0, 0, 0] },
+          name: { fontSize: 16, color: '#9ca3af', padding: [8, 0, 0, 0] },
         },
       },
       data: [{ value: score, name: categoryLabel }],

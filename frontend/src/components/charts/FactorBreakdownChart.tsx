@@ -19,6 +19,7 @@ export default function FactorBreakdownChart({ factors, loading }: FactorBreakdo
   const sorted = [...factors].sort((a, b) => b.subscore - a.subscore)
 
   const option = {
+    backgroundColor: 'transparent',
     tooltip: {
       trigger: 'axis' as const,
       axisPointer: { type: 'shadow' as const },

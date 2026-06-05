@@ -38,6 +38,7 @@ export default function TimeSeriesChart({ data, type, title, loading, error }: T
   }
 
   const option = {
+    backgroundColor: 'transparent',
     title: typeof title === 'string'
       ? { text: title, left: 'center', textStyle: { fontSize: 14 } }
       : undefined,
@@ -70,7 +71,7 @@ export default function TimeSeriesChart({ data, type, title, loading, error }: T
     },
     yAxis: {
       type: 'value' as const,
-      splitLine: { lineStyle: { type: 'dashed', color: '#e5e7eb' } },
+      splitLine: { lineStyle: { type: 'dashed', color: '#e5e7eb', width: 1, opacity: 0.5 } },
       axisLabel: {
         formatter: type === 'rate'
           ? (v: number) => `Rp${(v / 1000).toFixed(0)}rb`
