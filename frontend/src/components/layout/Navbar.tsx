@@ -100,7 +100,7 @@ export function Footer() {
           <a href="https://fmasoftwarelabs.up.railway.app" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
             FMA Software Labs
           </a>{' '}
-          <span className="text-red-500 font-bold">with excessive anger towards the Indonesian government</span>
+          <span className="text-red-500 font-bold uppercase">With Excessive Anger Towards The Indonesian Government</span>
         </p>
       </div>
     </footer>
