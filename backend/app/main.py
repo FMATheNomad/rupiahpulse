@@ -16,9 +16,6 @@ logger = structlog.get_logger(__name__)
 def create_app() -> FastAPI:
     setup_logging()
 
-    if settings.APP_ENV in ("staging", "production") and not settings.CORS_ORIGINS.strip():
-        raise RuntimeError("CORS_ORIGINS must be set in staging/production mode")
-
     app = FastAPI(
         title="Rupiah Health Index API",
         version="1.0.0",

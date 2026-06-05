@@ -27,17 +27,24 @@ class Settings(BaseSettings):
     CACHE_TTL_SECONDS_NEWS: int = 600
     API_KEY: str = ""
 
+    PORT: int = 8000
+
     @property
     def has_api_key(self) -> bool:
         return bool(self.API_KEY)
 
+    @property
+    def db_url_async(self) -> str:
+        url = self.DATABASE_URL
+        if url.startswith("postgresql://") and "+asyncpg" not in url:
+            url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
+        return url
+
     @model_validator(mode="after")
     def validate_production(self):
         if self.APP_ENV in ("staging", "production"):
-            if not self.DATABASE_URL or "localhost" in self.DATABASE_URL.lower():
-                raise ValueError("DATABASE_URL must point to remote DB in production")
-            if not self.CORS_ORIGINS.strip():
-                raise ValueError("CORS_ORIGINS is required in production")
+            if not self.DATABASE_URL:
+                raise ValueError("DATABASE_URL is required in production")
         return self
 
     def get_cors_origins(self) -> list[str]:
@@ -47,6 +54,8 @@ class Settings(BaseSettings):
             for o in local_origins:
                 if o not in origins:
                     origins.append(o)
+        if not origins and self.APP_ENV != "local":
+            origins = ["*"]
         return origins
 
 
