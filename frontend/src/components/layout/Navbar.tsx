@@ -58,6 +58,13 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 text-center text-sm text-muted-foreground">
         <p>Rupiah Pulse &copy; {new Date().getFullYear()} &mdash; {t('nav.health-index')}</p>
         <p className="mt-1">{t('footer.data-sources')}</p>
+        <p className="mt-3 text-xs">
+          Built and developed by{' '}
+          <a href="https://fmasoftwarelabs.up.railway.app" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+            FMA Software Labs
+          </a>{' '}
+          <span className="text-red-500 font-bold">with excessive anger towards the Indonesian government</span>
+        </p>
       </div>
     </footer>
   )
