@@ -63,9 +63,7 @@ export default function WhyRupiahFallingPage() {
                 </div>
 
                 <h3 className="text-lg font-semibold mt-6 mb-3">{t('analysis.methodology')}</h3>
-                <p className="text-muted-foreground">
-                  Indeks Kesehatan Rupiah (0-100) dihitung dari 7 faktor dengan bobot: DXY (15%), Oil (10%), Inflasi (10%), Cadangan Devisa (10%), Neraca Perdagangan (10%), Sentimen Pasar (10%), dan USD/IDR (35%).
-                </p>
+                <p className="text-muted-foreground">{t('analysis.methodology-text')}</p>
               </article>
             )}
           </CardContent>

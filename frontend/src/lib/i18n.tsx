@@ -103,6 +103,12 @@ const dict: Record<string, { id: string; en: string }> = {
   'gauge.strong': { id: 'Strong', en: 'Strong' },
   'gauge.neutral': { id: 'Neutral', en: 'Neutral' },
   'gauge.weak': { id: 'Weak', en: 'Weak' },
+  'seo.title.strong': { id: 'Rupiah Menguat - {rate} | Rupiah Pulse', en: 'Rupiah Strengthening - {rate} | Rupiah Pulse' },
+  'seo.title.weak': { id: 'Rupiah Melemah - {rate} | Rupiah Pulse', en: 'Rupiah Weakening - {rate} | Rupiah Pulse' },
+  'seo.title.neutral': { id: 'Rupiah Stabil - {rate} | Rupiah Pulse', en: 'Rupiah Stable - {rate} | Rupiah Pulse' },
+  'status.rupiah': { id: 'Rupiah {category}', en: 'Rupiah {category}' },
+  'analysis.methodology-text': { id: 'Indeks Kesehatan Rupiah (0-100) dihitung dari 7 faktor dengan bobot: DXY (15%), Oil (10%), Inflasi (10%), Cadangan Devisa (10%), Neraca Perdagangan (10%), Sentimen Pasar (10%), dan USD/IDR (35%).', en: 'Rupiah Health Index (0-100) is calculated from 7 weighted factors: DXY (15%), Oil (10%), Inflation (10%), FX Reserves (10%), Trade Balance (10%), Market Sentiment (10%), and USD/IDR Rate (35%).' },
+  'sentiment.label': { id: 'Sentimen: {score}', en: 'Sentiment: {score}' },
 
   'sentiment.positive': { id: 'positif', en: 'positive' },
   'sentiment.negative': { id: 'negatif', en: 'negative' },

@@ -22,11 +22,9 @@ export default function HomePage() {
   const labelNeutral = t('gauge.neutral')
   const labelWeak = t('gauge.weak')
 
-  const seoTitle = category === 'Strong'
-    ? `Rupiah Menguat ${rate ? `ke Rp${Number(rate).toLocaleString('id-ID')}/USD` : ''} | Rupiah Pulse`
-    : category === 'Weak'
-      ? `Rupiah Melemah ${rate ? `ke Rp${Number(rate).toLocaleString('id-ID')}/USD` : ''} | Rupiah Pulse`
-      : `Rupiah Stabil di Rp${rate ? Number(rate).toLocaleString('id-ID') : ''}/USD | Rupiah Pulse`
+  const rateStr = rate ? `Rp${Number(rate).toLocaleString('id-ID')}/USD` : '-'
+  const seoKey = category === 'Strong' ? 'seo.title.strong' : category === 'Weak' ? 'seo.title.weak' : 'seo.title.neutral'
+  const seoTitle = t(seoKey, { rate: rateStr })
 
   if (usdError || healthError) {
     return <ErrorState message={`${t('error.load')}. ${t('error.generic')}`} />
@@ -80,8 +78,7 @@ export default function HomePage() {
               {healthLoading ? <Spinner /> : (
                 <>
                   <p className="text-lg font-semibold">
-                    {category === 'Strong' ? `Rupiah ${labelStrong}` :
-                     category === 'Weak' ? `Rupiah ${labelWeak}` : `Rupiah ${labelNeutral}`}
+                    {t('status.rupiah', { category: category === 'Strong' ? labelStrong : category === 'Weak' ? labelWeak : labelNeutral })}
                   </p>
                 </>
               )}

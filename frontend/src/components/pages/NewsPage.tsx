@@ -134,7 +134,7 @@ export default function NewsPage() {
                         article.sentiment_score < 0 ? 'danger' : 'warning'
                       }>
                         {article.sentiment_score
-                          ? `Sentimen: ${article.sentiment_score >= 0 ? '+' : ''}${article.sentiment_score.toFixed(2)}`
+                          ? t('sentiment.label', { score: `${article.sentiment_score >= 0 ? '+' : ''}${article.sentiment_score.toFixed(2)}` })
                           : t('sentiment.neutral')}
                       </Badge>
                       {article.source && (

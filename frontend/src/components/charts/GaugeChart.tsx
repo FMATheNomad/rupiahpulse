@@ -42,13 +42,13 @@ export default function GaugeChart({ score, loading }: GaugeChartProps) {
       detail: {
         offsetCenter: [0, '60%'],
         valueAnimation: true,
-        formatter: `{value}\n{name}`,
+        formatter: (params: any) => `${params.value}\n${categoryLabel}`,
         rich: {
           value: { fontSize: 36, fontWeight: 'bold', color: categoryColor },
           name: { fontSize: 16, color: '#9ca3af', padding: [8, 0, 0, 0] },
         },
       },
-      data: [{ value: score, name: categoryLabel }],
+      data: [{ value: score }],
     }],
   }
 
