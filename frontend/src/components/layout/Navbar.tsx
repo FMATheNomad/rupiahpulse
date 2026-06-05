@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import { useLang } from '@/lib/i18n'
@@ -15,6 +16,7 @@ const navItems = [
 export default function Navbar() {
   const location = useLocation()
   const { t } = useLang()
+  const [menuOpen, setMenuOpen] = useState(false)
 
   return (
     <nav className="border-b bg-background sticky top-0 z-50">
@@ -44,8 +46,43 @@ export default function Navbar() {
           <div className="flex items-center gap-2 shrink-0">
             <LangToggle />
             <ThemeToggle />
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="md:hidden p-2 rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+              aria-label="Toggle menu"
+            >
+              {menuOpen ? (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
+            </button>
           </div>
         </div>
+
+        {menuOpen && (
+          <div className="md:hidden border-t pb-4 pt-2 space-y-1">
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={() => setMenuOpen(false)}
+                className={cn(
+                  'block px-3 py-2 rounded-md text-sm font-medium transition-colors',
+                  location.pathname === item.path
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
+                )}
+              >
+                {t(item.labelKey)}
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </nav>
   )
