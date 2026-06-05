@@ -60,37 +60,40 @@ export default function Layout({ children }: LayoutProps) {
           {children}
         </ErrorBoundary>
       </main>
-      <div className="border-t bg-muted/30 py-6 px-4">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-3 text-sm text-center">
-          <span className="text-muted-foreground text-xs sm:text-sm">
-            Find bugs, data not accurate, error loading data?{' '}
-          </span>
-          <a
-            href="mailto:fmasoftwarelabs@gmail.com"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white font-medium text-xs sm:text-sm transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-            fmasoftwarelabs@gmail.com
-          </a>
-          <a
-            href="https://t.me/FMATheNomad"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white font-medium text-xs sm:text-sm transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
-            t.me/FMATheNomad
-          </a>
-          <div className="hidden sm:block w-px h-6 bg-muted-foreground/30" />
-          <a
-            href="https://trakteer.id/farizma"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-green-400 hover:bg-green-500 text-green-900 font-semibold text-xs sm:text-sm transition-colors"
-          >
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            Donate
-          </a>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-8 mb-4">
+        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-5">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-center">
+            <p className="text-muted-foreground text-xs sm:text-sm">
+              Find bugs, data not accurate, error loading data?
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <a
+                href="mailto:fmasoftwarelabs@gmail.com"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white font-medium text-xs sm:text-sm transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                Email
+              </a>
+              <a
+                href="https://t.me/FMATheNomad"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white font-medium text-xs sm:text-sm transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+                Telegram
+              </a>
+              <a
+                href="https://trakteer.id/farizma"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-green-400 hover:bg-green-500 text-green-900 font-semibold text-xs sm:text-sm transition-colors"
+              >
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                Donate
+              </a>
+            </div>
+          </div>
         </div>
       </div>
       <Footer />
