@@ -12,7 +12,7 @@ RUN npm run build
 FROM nginx:alpine
 
 # Install Python and build deps
-RUN apk add --no-cache python3 py3-pip gcc libpq-dev python3-dev musl-dev && \
+RUN apk add --no-cache python3 py3-pip gcc libpq-dev python3-dev musl-dev supervisor && \
     pip3 install --no-cache-dir --break-system-packages \
     fastapi==0.115.6 uvicorn[standard]==0.34.0 sqlalchemy==2.0.36 \
     asyncpg==0.30.0 psycopg2-binary==2.9.10 alembic==1.14.1 \
