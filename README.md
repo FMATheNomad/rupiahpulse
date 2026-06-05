@@ -2,20 +2,22 @@
 
 > **Real-time web application that monitors, analyzes, and predicts the Indonesian Rupiah's health against the US Dollar.**
 
-Built with FastAPI + React + PostgreSQL. Fetches live data from open.er-api.com, Yahoo Finance, Stooq, World Bank & GDELT every 5 minutes. Includes a deterministic scoring engine, rule-based NLG explanation engine (Bahasa Indonesia), and a linear-regression prediction model.
+Built with FastAPI + React + PostgreSQL. Fetches live data from Yahoo Finance, Stooq, World Bank & GDELT every 5 minutes. Includes a deterministic scoring engine, rule-based NLG explanation engine (Bahasa Indonesia / English), and an exponentially-weighted regression prediction model.
 
 ---
 
 ## ✨ Features
 
-- **Real-time USD/IDR rate** — Live from open.er-api.com (updated every 5 min)
-- **Health Index (0–100)** — Composite score from 7 factors (DXY, Oil, Inflation, FX Reserves, Trade Balance, Market Sentiment, USD/IDR Rate)
-- **Explanation Engine** — Deterministic NLG in Bahasa Indonesia explaining why Rupiah is weakening/strengthening
-- **Time-Series Charts** — 1H to Max range, daily granularity, powered by Apache ECharts
-- **Prediction** — Linear regression + sentiment analysis for 1m/3m/6m/1y forecasts
-- **News Aggregator** — GDELT-powered news with sentiment scoring, language filtering, pagination + refresh
-- **SEO Optimized** — react-helmet-async, JSON-LD structured data, sitemap.xml, canonical URLs
-- **Anti-Abuse** — 60s cooldown on news refresh (backend + frontend)
+- **Real-time USD/IDR rate** — Live from Yahoo Finance (USDIDR=X), updates every 5 min
+- **Rupiah Health Index (0–100)** — Composite score from 7 factors (DXY, Oil, Inflation, FX Reserves, Trade Balance, Market Sentiment, USD/IDR Rate)
+- **Prediction Engine** — Exponentially-weighted regression + acceleration detection + economist consensus
+- **Explanation Engine** — Deterministic NLG in Bahasa Indonesia & English
+- **Time-Series Charts** — 1H to Max range, daily granularity, ECharts
+- **News Aggregator** — GDELT-powered with sentiment scoring, language filtering, pagination + refresh
+- **Responsive UI** — Dark/Light/System theme toggle, ID/EN/Auto language toggle, hamburger mobile menu
+- **SEO Optimized** — JSON-LD structured data, sitemap.xml, Google Search Console, OG tags, canonical URLs
+- **Anti-Abuse** — 60s cooldown on news refresh, nginx rate limiting
+- **Security** — CORS restricted, security headers, non-root container, error sanitization
 
 ---
 
@@ -47,13 +49,15 @@ rupiahpulse/
 └── README.md
 ```
 
-### Processes
+### Single-Container Architecture
 
-| Process | Image | Description |
-|---------|-------|-------------|
-| **web** | `backend/Dockerfile` | FastAPI API server (port 8000) |
-| **worker** | `backend/Dockerfile.worker` | APScheduler: fetches data every 5 min |
-| **frontend** | `frontend/Dockerfile` | Nginx SPA (port 80) |
+All services run in 1 container via supervisord:
+
+| Process | Role | Port |
+|---------|------|------|
+| **nginx** | Serves frontend SPA + proxies /api/ to backend | 80 |
+| **uvicorn** | FastAPI backend (REST API v1) | 8000 |
+| **worker** | APScheduler: fetches data every 5 min | — |
 
 ---
 
@@ -164,8 +168,7 @@ Score range: **0–100**
 
 | Source | Data | Frequency | Key Required |
 |--------|------|-----------|-------------|
-| [open.er-api.com](https://open.er-api.com) | USD/IDR rate | Daily | No |
-| [Yahoo Finance](https://finance.yahoo.com) | DXY (DX-Y.NYB), Oil (CL=F) | Real-time | No |
+| [Yahoo Finance](https://finance.yahoo.com) | USD/IDR (USDIDR=X), DXY (DX-Y.NYB), Oil (CL=F) | Real-time | No |
 | [Stooq](https://stooq.com) | Gold (XAUUSD) | Delayed | No |
 | [World Bank API](https://api.worldbank.org) | Inflation, FX Reserves, Trade Balance | Annual | No |
 | [GDELT Project](https://www.gdeltproject.org) | News + sentiment | Real-time | No |
@@ -230,15 +233,16 @@ Post-deploy steps (via Railway Shell):
 cd backend && pip install -r requirements.txt && PYTHONPATH=. alembic upgrade head && python seed.py
 ```
 
-### Manual Deploy (3 Services from 1 Repo)
+### Manual Deploy
 
-Railway detects services via `railway.json` in subdirectories:
+Railway detects the service via root `railway.json` with DOCKERFILE builder:
 
-| Service | Root Dir | Config | Port | Healthcheck |
-|---------|----------|--------|------|-------------|
-| **API** | `backend/` | `railway.json` | `8000` | `/health` |
-| **Worker** | `backend/` | `railway.worker.json` | — | — |
-| **Frontend** | `frontend/` | `railway.json` | `80` | — |
+| Setting | Value |
+|---------|-------|
+| **Root Directory** | (empty — use repo root) |
+| **Build** | Auto-detect `Dockerfile` |
+| **Port** | `80` (set `PORT=80` env var) |
+| **Healthcheck** | `/health` |
 
 **Steps:**
 1. Connect GitHub repo `FMATheNomad/rupiahpulse` to Railway
