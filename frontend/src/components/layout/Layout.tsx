@@ -60,6 +60,26 @@ export default function Layout({ children }: LayoutProps) {
           {children}
         </ErrorBoundary>
       </main>
+      <div className="border-t bg-muted/30 py-6 px-4">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-3 text-sm text-center">
+          <span className="text-muted-foreground">
+            Find bugs, data not accurate, error loading data?{' '}
+            <a href="mailto:fmasoftwarelabs@gmail.com" className="text-primary hover:underline font-medium">fmasoftwarelabs@gmail.com</a>
+            {' / '}
+            <a href="https://t.me/FMATheNomad" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">t.me/FMATheNomad</a>
+          </span>
+          <span className="hidden sm:inline text-muted-foreground/50">|</span>
+          <a
+            href="https://trakteer.id/farizma"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-red-500 hover:text-red-600 font-semibold text-sm"
+          >
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            Donate
+          </a>
+        </div>
+      </div>
       <Footer />
     </div>
   )
