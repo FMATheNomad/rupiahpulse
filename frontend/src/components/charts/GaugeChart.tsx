@@ -1,6 +1,5 @@
 import ReactEChartsCore from 'echarts-for-react'
 import { Skeleton } from '@/components/ui'
-import { useChartTheme } from '@/hooks/useChartTheme'
 
 interface GaugeChartProps {
   score: number
@@ -8,12 +7,11 @@ interface GaugeChartProps {
 }
 
 export default function GaugeChart({ score, loading }: GaugeChartProps) {
-  const chartTheme = useChartTheme()
-
   if (loading) return <Skeleton className="h-[280px] w-full rounded-lg" />
 
-  const categoryColor = score >= 70 ? '#16a34a' : score >= 40 ? '#ca8a04' : '#dc2626'
-  const categoryLabel = score >= 70 ? 'Strong' : score >= 40 ? 'Neutral' : 'Weak'
+  const safeScore = typeof score === 'number' && !isNaN(score) ? score : 0
+  const categoryColor = safeScore >= 70 ? '#16a34a' : safeScore >= 40 ? '#ca8a04' : '#dc2626'
+  const categoryLabel = safeScore >= 70 ? 'Strong' : safeScore >= 40 ? 'Neutral' : 'Weak'
 
   const option = {
     backgroundColor: 'transparent',
@@ -43,21 +41,31 @@ export default function GaugeChart({ score, loading }: GaugeChartProps) {
       splitLine: { show: false },
       axisLabel: { show: false },
       detail: {
-        offsetCenter: [0, '60%'],
+        offsetCenter: [0, '40%'],
         valueAnimation: true,
-        formatter: (params: any) => `${params.value}\n${categoryLabel}`,
+        formatter: `{value}`,
         rich: {
           value: { fontSize: 36, fontWeight: 'bold', color: categoryColor },
-          name: { fontSize: 16, color: chartTheme.isDark ? '#d1d5db' : '#6b7280', padding: [8, 0, 0, 0] },
         },
       },
-      data: [{ value: score }],
+      data: [{ value: safeScore }],
     }],
   }
 
   return (
     <div className="w-full rounded-lg border bg-card p-4">
-      <ReactEChartsCore option={option} style={{ height: '280px' }} lazyUpdate />
+      <ReactEChartsCore option={option} style={{ height: '250px' }} lazyUpdate />
+      <div className="text-center mt-1">
+        <span
+          className="inline-block text-sm font-semibold px-3 py-1 rounded-full"
+          style={{
+            backgroundColor: safeScore >= 70 ? '#16a34a20' : safeScore >= 40 ? '#ca8a0420' : '#dc262620',
+            color: categoryColor,
+          }}
+        >
+          {categoryLabel}
+        </span>
+      </div>
     </div>
   )
 }
