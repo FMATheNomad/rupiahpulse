@@ -1,5 +1,6 @@
 import ReactEChartsCore from 'echarts-for-react'
 import { Skeleton } from '@/components/ui'
+import { useChartTheme } from '@/hooks/useChartTheme'
 
 interface TimeSeriesPoint {
   timestamp_bucket: string
@@ -16,9 +17,11 @@ interface TimeSeriesChartProps {
 }
 
 export default function TimeSeriesChart({ data, type, title, loading, error }: TimeSeriesChartProps) {
+  const chartTheme = useChartTheme()
+
   if (loading) return <Skeleton className="h-[400px] w-full rounded-lg" />
-  if (error) return <div className="h-[400px] w-full rounded-lg border bg-card flex items-center justify-center text-muted-foreground">Gagal memuat data</div>
-  if (!data || data.length === 0) return <div className="h-[400px] w-full rounded-lg border bg-card flex items-center justify-center text-muted-foreground">Belum ada data untuk rentang ini</div>
+  if (error) return <div className="h-[400px] w-full rounded-lg border bg-card flex items-center justify-center text-muted-foreground">Failed to load</div>
+  if (!data || data.length === 0) return <div className="h-[400px] w-full rounded-lg border bg-card flex items-center justify-center text-muted-foreground">No data</div>
 
   const seriesData = [...data].reverse()
     .map((d) => [d.timestamp_bucket, type === 'score' ? d.score : d.rate])
@@ -26,12 +29,11 @@ export default function TimeSeriesChart({ data, type, title, loading, error }: T
 
   if (seriesData.length < 2) {
     const val = type === 'rate' ? data[0]?.rate : data[0]?.score
-    const label = type === 'rate' ? `Rp ${val?.toLocaleString('id-ID') || '-'}` : `Skor: ${val || '-'}`
+    const label = type === 'rate' ? `Rp ${val?.toLocaleString('id-ID') || '-'}` : `Score: ${val || '-'}`
     return (
       <div className="h-[400px] w-full rounded-lg border bg-card flex items-center justify-center">
         <div className="text-center">
           <p className="text-lg font-medium">{label}</p>
-          <p className="text-sm text-muted-foreground mt-1">Data terkini untuk rentang ini</p>
         </div>
       </div>
     )
@@ -40,19 +42,18 @@ export default function TimeSeriesChart({ data, type, title, loading, error }: T
   const option = {
     backgroundColor: 'transparent',
     title: typeof title === 'string'
-      ? { text: title, left: 'center', textStyle: { fontSize: 14 } }
+      ? { text: title, left: 'center', textStyle: { fontSize: 14, color: chartTheme.axisLabel.color } }
       : undefined,
     tooltip: {
+      ...chartTheme.tooltip,
       trigger: 'axis' as const,
-      backgroundColor: 'rgba(255,255,255,0.95)',
-      borderWidth: 1,
       formatter: (params: { value: [string, number] }[]) => {
         if (!params?.length) return ''
         const [ts, val] = params[0].value
-        const date = new Date(ts).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' })
+        const date = new Date(ts).toLocaleDateString()
         const formatted = type === 'rate'
           ? `Rp ${val.toLocaleString('id-ID')}`
-          : `Skor: ${val}/100`
+          : `Score: ${val}/100`
         return `${date}<br/>${formatted}`
       },
     },
@@ -63,6 +64,7 @@ export default function TimeSeriesChart({ data, type, title, loading, error }: T
       axisTick: { show: false },
       splitLine: { show: false },
       axisLabel: {
+        ...chartTheme.axisLabel,
         formatter: (v: number) => {
           const d = new Date(v)
           return `${d.getDate()}/${d.getMonth() + 1}`
@@ -71,8 +73,9 @@ export default function TimeSeriesChart({ data, type, title, loading, error }: T
     },
     yAxis: {
       type: 'value' as const,
-      splitLine: { lineStyle: { type: 'dashed', color: '#e5e7eb', width: 1, opacity: 0.5 } },
+      splitLine: { lineStyle: { type: 'dashed', color: chartTheme.splitLine.color, width: 1, opacity: 0.5 } },
       axisLabel: {
+        ...chartTheme.axisLabel,
         formatter: type === 'rate'
           ? (v: number) => `Rp${(v / 1000).toFixed(0)}rb`
           : (v: number) => `${v}`,
@@ -92,9 +95,7 @@ export default function TimeSeriesChart({ data, type, title, loading, error }: T
       itemStyle: { color: type === 'score' ? '#2563eb' : '#059669' },
       connectNulls: true,
     }],
-    dataZoom: [
-      { type: 'inside' as const, start: 0, end: 100 },
-    ],
+    dataZoom: [{ type: 'inside' as const, start: 0, end: 100 }],
   }
 
   return (

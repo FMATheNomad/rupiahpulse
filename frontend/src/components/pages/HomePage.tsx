@@ -18,9 +18,7 @@ export default function HomePage() {
   const score = health?.score ?? 50
   const category = health?.category || 'Neutral'
 
-  const labelStrong = t('gauge.strong')
-  const labelNeutral = t('gauge.neutral')
-  const labelWeak = t('gauge.weak')
+  const catLabel = category === 'Strong' ? t('gauge.strong') : category === 'Weak' ? t('gauge.weak') : t('gauge.neutral')
 
   const rateStr = rate ? `Rp${Number(rate).toLocaleString('id-ID')}/USD` : '-'
   const seoKey = category === 'Strong' ? 'seo.title.strong' : category === 'Weak' ? 'seo.title.weak' : 'seo.title.neutral'
@@ -65,7 +63,7 @@ export default function HomePage() {
                 <>
                   <p className="text-3xl font-bold">{score}</p>
                   <Badge variant={category === 'Strong' ? 'success' : category === 'Neutral' ? 'warning' : 'danger'} className="mt-2">
-                    {category === 'Strong' ? labelStrong : category === 'Neutral' ? labelNeutral : labelWeak}
+                    {catLabel}
                   </Badge>
                 </>
               )}
@@ -78,7 +76,7 @@ export default function HomePage() {
               {healthLoading ? <Spinner /> : (
                 <>
                   <p className="text-lg font-semibold">
-                    {t('status.rupiah', { category: category === 'Strong' ? labelStrong : category === 'Weak' ? labelWeak : labelNeutral })}
+                    {t('status.rupiah', { category: catLabel })}
                   </p>
                 </>
               )}
