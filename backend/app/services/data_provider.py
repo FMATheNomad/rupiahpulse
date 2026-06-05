@@ -64,14 +64,8 @@ class DataProvider:
                 return b"".join(chunks)
 
     async def fetch_usd_idr(self) -> dict:
-        url = "https://open.er-api.com/v6/latest/USD"
-        async def _fetch():
-            data = await self._fetch_with_limit(url)
-            import json
-            parsed = json.loads(data)
-            rate = Decimal(str(parsed["rates"]["IDR"]))
-            return {"rate": rate, "source": "open.er-api.com", "fetched_at": datetime.now(timezone.utc)}
-        return await retry_with_backoff(_fetch, source="open.er-api.com")
+        result = await self._fetch_yahoo_json("USDIDR=X")
+        return {"rate": Decimal(str(result["close"])), "source": result["source"], "fetched_at": datetime.now(timezone.utc)}
 
     async def _fetch_yahoo_json(self, symbol: str) -> dict:
         url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?interval=1d"
