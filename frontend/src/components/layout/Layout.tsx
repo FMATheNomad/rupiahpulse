@@ -91,13 +91,13 @@ export default function Layout({ children }: LayoutProps) {
                 trakteer.id
               </a>
               <a
-                href="https://buymeacoffee.com/FMATheNomad"
+                href="https://paypal.me/farizmaditya"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-semibold text-xs sm:text-sm transition-colors"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white font-semibold text-xs sm:text-sm transition-colors"
               >
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M2 21V3h20v18H2zm2-2h16V5H4v14zm4-8l2-2h4l2 2-4 4-4-4zm3-2h2V7h-2v2zm0 4h2v-2h-2v2z"/></svg>
-                buymeacoffee
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z"/></svg>
+                PayPal
               </a>
             </div>
           </div>
