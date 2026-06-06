@@ -11,7 +11,7 @@ const navItems = [
   { path: '/currencies', labelKey: 'nav.currencies' },
   { path: '/history', labelKey: 'nav.riwayat' },
   { path: '/why-rupiah-falling', labelKey: 'nav.analisis' },
-  { path: '/docs', labelKey: 'nav.docs' },
+  { path: '/pricing', labelKey: 'nav.pricing' },
   { path: '/news', labelKey: 'nav.berita' },
 ]
 
@@ -105,6 +105,17 @@ export function Footer() {
             FMA Software Labs
           </a>{' '}
           <span className="text-muted-foreground">Built with ❤️ for Indonesian financial literacy</span>
+        </p>
+        <p className="mt-2 text-xs text-muted-foreground">
+          <Link to="/docs" className="hover:text-foreground transition-colors">Documentation</Link>
+          {' · '}
+          <a href="https://polar.sh/rupiahpulse" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">API Access</a>
+          {' · '}
+          <Link to="/news" className="hover:text-foreground transition-colors">News</Link>
+          {' · '}
+          <Link to="/history" className="hover:text-foreground transition-colors">History</Link>
+          {' · '}
+          <Link to="/currencies" className="hover:text-foreground transition-colors">Currencies</Link>
         </p>
       </div>
     </footer>

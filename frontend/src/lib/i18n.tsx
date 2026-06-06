@@ -15,6 +15,7 @@ const dict: Record<string, { id: string; en: string }> = {
   'nav.prediksi': { id: 'Prediksi', en: 'Prediction' },
   'nav.currencies': { id: 'Mata Uang', en: 'Currencies' },
   'nav.docs': { id: 'Dokumentasi', en: 'Documentation' },
+  'nav.pricing': { id: 'Harga', en: 'Pricing' },
   'nav.riwayat': { id: 'Riwayat', en: 'History' },
   'nav.analisis': { id: 'Analisis', en: 'Analysis' },
   'nav.berita': { id: 'Berita', en: 'News' },
