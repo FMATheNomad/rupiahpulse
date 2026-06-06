@@ -9,14 +9,16 @@ Built with FastAPI + React + PostgreSQL. Fetches live data from Yahoo Finance, S
 ## ✨ Features
 
 - **Real-time USD/IDR rate** — Live from Yahoo Finance (USDIDR=X), updates every 5 min
+- **Multi-Currency Support** — 9 pairs (USD, SGD, MYR, CNY, JPY, THB, EUR, GBP, AUD vs IDR) with live rates and 30-day sparkline charts
 - **Rupiah Health Index (0–100)** — Composite score from 7 factors (DXY, Oil, Inflation, FX Reserves, Trade Balance, Market Sentiment, USD/IDR Rate)
 - **Prediction Engine** — Exponentially-weighted regression + acceleration detection + economist consensus
 - **Explanation Engine** — Deterministic NLG in Bahasa Indonesia & English
-- **Time-Series Charts** — 1H to Max range, daily granularity, ECharts
+- **Documentation Page** (`/docs`) — Complete methods, formulas, architecture, limitations
+- **Time-Series Charts** — 1H to Max range, daily granularity, ECharts (gauge, bar, sparkline)
 - **News Aggregator** — GDELT-powered with sentiment scoring, language filtering, pagination + refresh
 - **Responsive UI** — Dark/Light/System theme toggle, ID/EN/Auto language toggle, hamburger mobile menu
 - **SEO Optimized** — JSON-LD structured data, sitemap.xml, Google Search Console, OG tags, canonical URLs
-- **Anti-Abuse** — 60s cooldown on news refresh, nginx rate limiting
+- **Anti-Abuse** — 60s cooldown on news refresh, nginx rate limiting (30 req/s)
 - **Security** — CORS restricted, security headers, non-root container, error sanitization
 
 ---
@@ -116,12 +118,14 @@ docker compose up --build
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `GET` | `/health` | Healthcheck (validates DB) |
+| `GET` | `/health` | Healthcheck |
 | `GET` | `/api/v1/usd-idr` | Latest USD/IDR rate |
 | `GET` | `/api/v1/usd-idr/history?range=1y&granularity=daily` | USD/IDR time series |
+| `GET` | `/api/v1/currencies` | Live 9 currency pairs |
+| `GET` | `/api/v1/currencies/history?pair=SGD/IDR&limit=30` | Currency pair history |
 | `GET` | `/api/v1/health-index` | Live health index + factor breakdown |
 | `GET` | `/api/v1/history?range=1y` | Health index history |
-| `GET` | `/api/v1/prediction` | Rupiah forecast (1m/3m/6m/1y) |
+| `GET` | `/api/v1/prediction` | Rupiah forecast (1m/July/3m/6m/1y) |
 | `GET` | `/api/v1/explanation` | Latest explanation text |
 | `GET` | `/api/v1/news?limit=10&offset=0` | Paginated news with sentiment |
 | `POST` | `/api/v1/news/refresh` | Trigger GDELT news fetch (60s cooldown) |
@@ -168,7 +172,7 @@ Score range: **0–100**
 
 | Source | Data | Frequency | Key Required |
 |--------|------|-----------|-------------|
-| [Yahoo Finance](https://finance.yahoo.com) | USD/IDR (USDIDR=X), DXY (DX-Y.NYB), Oil (CL=F) | Real-time | No |
+| [Yahoo Finance](https://finance.yahoo.com) | USD/IDR, SGD/IDR, MYR/IDR, CNY/IDR, JPY/IDR, THB/IDR, EUR/IDR, GBP/IDR, AUD/IDR, DXY, Oil | Real-time | No |
 | [Stooq](https://stooq.com) | Gold (XAUUSD) | Delayed | No |
 | [World Bank API](https://api.worldbank.org) | Inflation, FX Reserves, Trade Balance | Annual | No |
 | [GDELT Project](https://www.gdeltproject.org) | News + sentiment | Real-time | No |
