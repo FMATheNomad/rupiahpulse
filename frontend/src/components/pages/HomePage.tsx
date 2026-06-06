@@ -167,22 +167,22 @@ export default function HomePage() {
         {score > 0 && rate && (
           <Card className="border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30">
             <CardHeader><CardTitle className="text-base">
-              {rate > 17000 ? '⚠️ Dampak Pelemahan Rupiah untuk Anda' : '📈 Dampak Penguatan Rupiah untuk Anda'}
+              {rate > 17000 ? t('impact.weak.title') : t('impact.strong.title')}
             </CardTitle></CardHeader>
             <CardContent>
               <ul className="space-y-2 text-sm">
                 {rate > 17000 ? (
                   <>
-                    <li className="flex items-start gap-2">• <span><strong>Harga barang impor naik</strong> — elektronik, obat, bahan baku industri tambah mahal</span></li>
-                    <li className="flex items-start gap-2">• <span><strong>Biaya pendidikan & wisata luar negeri</strong> — makin mahal karena dolar naik</span></li>
-                    <li className="flex items-start gap-2">• <span><strong>Inflasi tertahan</strong> — harga barang dalam negeri ikut tertekan naik</span></li>
-                    <li className="flex items-start gap-2">• <span><strong>Positif: eksportir diuntungkan</strong> — hasil jualannya lebih bernilai</span></li>
+                    <li className="flex items-start gap-2">• <span>{t('impact.weak.import')}</span></li>
+                    <li className="flex items-start gap-2">• <span>{t('impact.weak.travel')}</span></li>
+                    <li className="flex items-start gap-2">• <span>{t('impact.weak.inflation')}</span></li>
+                    <li className="flex items-start gap-2">• <span>{t('impact.weak.export')}</span></li>
                   </>
                 ) : (
                   <>
-                    <li className="flex items-start gap-2">• <span><strong>Daya beli masyarakat terjaga</strong> — harga barang impor lebih murah</span></li>
-                    <li className="flex items-start gap-2">• <span><strong>Biaya luar negeri lebih murah</strong> — liburan, kuliah, atau bisnis ke luar negeri</span></li>
-                    <li className="flex items-start gap-2">• <span><strong>Inflasi lebih terkendali</strong></span></li>
+                    <li className="flex items-start gap-2">• <span>{t('impact.strong.purchasing')}</span></li>
+                    <li className="flex items-start gap-2">• <span>{t('impact.strong.travel')}</span></li>
+                    <li className="flex items-start gap-2">• <span>{t('impact.strong.inflation')}</span></li>
                   </>
                 )}
               </ul>

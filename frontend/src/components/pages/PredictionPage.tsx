@@ -111,17 +111,9 @@ export default function PredictionPage() {
 
             <Card className="border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30">
               <CardContent className="p-4 text-xs text-amber-800 dark:text-amber-200 leading-relaxed">
-                <p className="font-semibold mb-1">⚠️ Disclaimer</p>
-                <p>
-                  Prediksi ini berdasarkan model statistik sederhana (EWMA regression) dan data historis.
-                  Makin jauh horizon, makin tinggi ketidakpastian. Prediksi 1 tahun hanya menunjukkan
-                  arah jika tren saat ini berlanjut tanpa intervensi — yang di dunia nyata hampir pasti
-                  tidak terjadi. Faktor seperti intervensi BI, perubahan kebijakan The Fed, harga
-                  komoditas, dan stabilitas politik dapat mengubah arah secara drastis.
-                </p>
-                <p className="mt-1">
-                  <strong>Bukan rekomendasi finansial. Jangan digunakan untuk trading atau keputusan investasi.</strong>
-                </p>
+                <p className="font-semibold mb-1">{t('prediction.disclaimer')}</p>
+                <p>{t('prediction.disclaimer.text')}</p>
+                <p className="mt-1"><strong>{t('prediction.disclaimer.financial')}</strong></p>
               </CardContent>
             </Card>
           </>
