@@ -1,20 +1,15 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { API_BASE } from '@/lib/utils'
 
-function getLang(): string {
-  try {
-    const saved = localStorage.getItem('rupiahpulse-lang')
-    if (!saved || saved === 'auto') {
-      return navigator.language?.startsWith('id') ? 'id' : 'en'
-    }
-    return saved
-  } catch {
-    return 'id'
-  }
-}
-
 async function fetchJson(url: string) {
-  const lang = getLang()
+  const lang = (() => {
+    try {
+      const saved = localStorage.getItem('rupiahpulse-lang')
+      if (saved === 'id' || saved === 'en') return saved
+      if (!saved || saved === 'auto') return navigator.language?.startsWith('id') ? 'id' : 'en'
+      return 'id'
+    } catch { return 'id' }
+  })()
   const sep = url.includes('?') ? '&' : '?'
   const langUrl = url.includes('lang=') ? url : `${url}${url.includes('?') ? '&' : '?'}lang=${lang}`
   const res = await fetch(`${API_BASE}${langUrl}`)
@@ -88,6 +83,13 @@ export function useCurrencies() {
     queryKey: ['currencies'],
     queryFn: () => fetchJson('/api/v1/currencies'),
     refetchInterval: 300000,
+  })
+}
+
+export function useCurrencyHistory(pair: string, limit = 30) {
+  return useQuery({
+    queryKey: ['currency-history', pair, limit],
+    queryFn: () => fetchJson(`/api/v1/currencies/history?pair=${pair}&limit=${limit}`),
   })
 }
 

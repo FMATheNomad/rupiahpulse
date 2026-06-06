@@ -34,6 +34,8 @@ class JobResult:
         logger.error("job_failed", job=self.name, error=error)
 
 
+CURRENCY_PAIRS = ["USD/IDR", "SGD/IDR", "MYR/IDR", "CNY/IDR", "JPY/IDR", "THB/IDR", "EUR/IDR", "GBP/IDR", "AUD/IDR"]
+
 async def run_currency_job():
     result = JobResult("currency_fetch")
     try:
@@ -54,6 +56,32 @@ async def run_currency_job():
 
         logger.info("currency_job_completed", rate=str(usd_idr["rate"]))
     except DataProviderError as e:
+        result.fail(str(e))
+    return result
+
+
+async def run_currencies_job():
+    result = JobResult("currencies_fetch")
+    try:
+        provider = DataProvider()
+        rates = await provider.fetch_all_currencies()
+        now = datetime.now(timezone.utc)
+        bucket = now.replace(minute=0, second=0, microsecond=0)
+
+        async with async_session_factory() as session:
+            repo = CurrencyRepository(session)
+            for item in rates:
+                if item["pair"] != "USD/IDR":
+                    await repo.upsert({
+                        "timestamp_bucket": bucket,
+                        "pair": item["pair"],
+                        "rate": item["rate"],
+                        "source": item["source"],
+                    })
+            await session.commit()
+
+        logger.info("currencies_job_completed", count=len(rates))
+    except Exception as e:
         result.fail(str(e))
     return result
 

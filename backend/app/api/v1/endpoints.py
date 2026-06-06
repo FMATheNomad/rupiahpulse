@@ -64,6 +64,34 @@ async def get_currencies():
         raise HTTPException(status_code=502, detail=f"Failed to fetch currencies: {str(e)[:100]}")
 
 
+@router.get("/currencies/history")
+async def get_currencies_history(
+    pair: str = Query("USD/IDR"),
+    limit: int = Query(30, le=365),
+    db: AsyncSession = Depends(get_db),
+):
+    repo = CurrencyRepository(db)
+    rows = await repo.get_history(pair, limit=limit, offset=0)
+    if granularity := "daily":
+        daily: dict[str, list[float]] = {}
+        for r in rows:
+            day = r.timestamp_bucket.strftime("%Y-%m-%d")
+            if day not in daily:
+                daily[day] = []
+            daily[day].append(float(r.rate))
+        aggregated = []
+        for day in sorted(daily.keys(), reverse=True)[:limit]:
+            rates = daily[day]
+            aggregated.append({
+                "timestamp_bucket": f"{day}T00:00:00Z",
+                "rate": round(sum(rates) / len(rates), 2),
+                "change_24h_pct": None,
+            })
+        return {"data": aggregated, "meta": {"total": len(aggregated), "pair": pair}}
+    rows = rows[:limit]
+    return {"data": [{"timestamp_bucket": r.timestamp_bucket.isoformat(), "rate": float(r.rate), "change_24h_pct": float(r.change_24h_pct) if r.change_24h_pct else None} for r in rows], "meta": {"total": len(rows), "pair": pair}}
+
+
 @router.get("/usd-idr/history")
 async def get_usd_idr_history(
     range: str = Query("1y", alias="range"),

@@ -11,6 +11,7 @@ from app.core.config import settings
 from app.core.logging import setup_logging
 from app.jobs.scheduler import (
     run_currency_job,
+    run_currencies_job,
     run_market_job,
     run_news_job,
     run_health_index_job,
@@ -25,6 +26,7 @@ async def run_scheduler():
     scheduler = AsyncIOScheduler()
 
     scheduler.add_job(run_currency_job, IntervalTrigger(minutes=5), id="currency_fetch", replace_existing=True)
+    scheduler.add_job(run_currencies_job, IntervalTrigger(minutes=30), id="currencies_fetch", replace_existing=True)
     scheduler.add_job(run_market_job, IntervalTrigger(minutes=5), id="market_fetch", replace_existing=True)
     scheduler.add_job(run_news_job, IntervalTrigger(minutes=30), id="news_fetch", replace_existing=True)
     scheduler.add_job(run_health_index_job, IntervalTrigger(minutes=5), id="health_index_calc", replace_existing=True)
