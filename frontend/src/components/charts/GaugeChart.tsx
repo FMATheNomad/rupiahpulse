@@ -10,8 +10,8 @@ export default function GaugeChart({ score, loading }: GaugeChartProps) {
   if (loading) return <Skeleton className="h-[280px] w-full rounded-lg" />
 
   const safeScore = typeof score === 'number' && !isNaN(score) ? score : 0
-  const categoryColor = safeScore >= 70 ? '#16a34a' : safeScore >= 40 ? '#ca8a04' : '#dc2626'
-  const categoryLabel = safeScore >= 70 ? 'Strong' : safeScore >= 40 ? 'Neutral' : 'Weak'
+  const categoryColor = safeScore >= 75 ? '#16a34a' : safeScore >= 50 ? '#ca8a04' : '#dc2626'
+  const categoryLabel = safeScore >= 75 ? 'Strong' : safeScore >= 50 ? 'Neutral' : 'Weak'
 
   const option = {
     backgroundColor: 'transparent',
@@ -31,8 +31,8 @@ export default function GaugeChart({ score, loading }: GaugeChartProps) {
         lineStyle: {
           width: 20,
           color: [
-            [0.39, '#dc2626'],
-            [0.69, '#ca8a04'],
+            [0.49, '#dc2626'],
+            [0.74, '#ca8a04'],
             [1, '#16a34a'],
           ],
         },
@@ -59,7 +59,7 @@ export default function GaugeChart({ score, loading }: GaugeChartProps) {
         <span
           className="inline-block text-sm font-semibold px-3 py-1 rounded-full"
           style={{
-            backgroundColor: safeScore >= 70 ? '#16a34a20' : safeScore >= 40 ? '#ca8a0420' : '#dc262620',
+            backgroundColor: safeScore >= 75 ? '#16a34a20' : safeScore >= 50 ? '#ca8a0420' : '#dc262620',
             color: categoryColor,
           }}
         >
