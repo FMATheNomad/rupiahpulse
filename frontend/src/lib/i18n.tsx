@@ -20,7 +20,7 @@ const dict: Record<string, { id: string; en: string }> = {
   'nav.berita': { id: 'Berita', en: 'News' },
   'nav.rupiah-pulse': { id: 'Rupiah Pulse', en: 'Rupiah Pulse' },
 
-  'footer.data-sources': { id: 'Data diperbarui setiap 5 menit. Sumber: open.er-api.com, Yahoo Finance, Stooq, World Bank, GDELT.', en: 'Data updated every 5 minutes. Sources: open.er-api.com, Yahoo Finance, Stooq, World Bank, GDELT.' },
+  'footer.data-sources': { id: 'Data diperbarui setiap 5 menit. Sumber: Yahoo Finance, Stooq, World Bank, GDELT.', en: 'Data updated every 5 minutes. Sources: Yahoo Finance, Stooq, World Bank, GDELT.' },
 
   'theme.light': { id: 'Terang', en: 'Light' },
   'theme.dark': { id: 'Gelap', en: 'Dark' },

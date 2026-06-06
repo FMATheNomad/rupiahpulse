@@ -33,9 +33,7 @@ export default function Layout({ children }: LayoutProps) {
         <meta name="twitter:site" content="@rupiahpulse" />
         <meta name="twitter:domain" content={domain} />
 
-        <link rel="preconnect" href="https://open.er-api.com" />
         <link rel="preconnect" href="https://query1.finance.yahoo.com" />
-        <link rel="dns-prefetch" href="https://open.er-api.com" />
         <link rel="dns-prefetch" href="https://query1.finance.yahoo.com" />
 
         <script type="application/ld+json">
