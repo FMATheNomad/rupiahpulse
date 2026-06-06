@@ -14,7 +14,7 @@ class CurrencySnapshotCreate(BaseModel):
     high_24h: Decimal | None = None
     low_24h: Decimal | None = None
     change_24h_pct: float | None = None
-    source: str = "open.er-api.com"
+    source: str = "yahoo"
 
 
 class CurrencySnapshotResponse(BaseModel):
@@ -35,3 +35,11 @@ class CurrencyHistoryResponse(BaseModel):
     timestamp_bucket: datetime
     rate: float
     change_24h_pct: float | None = None
+
+
+class CurrencyRateResponse(BaseModel):
+    pair: str
+    rate: float
+    change_pct: float | None = None
+    source: str
+    updated_at: str

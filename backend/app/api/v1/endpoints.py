@@ -10,10 +10,11 @@ from app.db.session import get_db, async_session_factory
 from app.models.currency import CurrencySnapshot
 from app.models.explanation import ExplanationCache
 from app.models.news import NewsCache
-from app.schemas.currency import CurrencySnapshotResponse, CurrencyHistoryResponse
+from app.schemas.currency import CurrencySnapshotResponse, CurrencyHistoryResponse, CurrencyRateResponse
 from app.schemas.health import HealthIndexResponse, FactorBreakdown, HealthIndexHistoryResponse
 from app.schemas.explanation import ExplanationResponse
 from app.schemas.news import NewsResponse
+from app.services.data_provider import DataProvider
 from app.services.repository import CurrencyRepository, MacroRepository
 from app.services.scoring import ScoringEngine
 from app.services.explanation import ExplanationEngine
@@ -51,6 +52,16 @@ async def get_usd_idr(db: AsyncSession = Depends(get_db)):
         "data": CurrencySnapshotResponse.model_validate(latest),
         "meta": {"timestamp": datetime.now(timezone.utc).isoformat()},
     }
+
+
+@router.get("/currencies")
+async def get_currencies():
+    provider = DataProvider()
+    try:
+        rates = await provider.fetch_all_currencies()
+        return {"data": rates, "meta": {"total": len(rates), "timestamp": datetime.now(timezone.utc).isoformat()}}
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"Failed to fetch currencies: {str(e)[:100]}")
 
 
 @router.get("/usd-idr/history")

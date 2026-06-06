@@ -83,6 +83,14 @@ export function useNews(limit = 10, offset = 0) {
   })
 }
 
+export function useCurrencies() {
+  return useQuery({
+    queryKey: ['currencies'],
+    queryFn: () => fetchJson('/api/v1/currencies'),
+    refetchInterval: 300000,
+  })
+}
+
 export function useRefreshNews() {
   return useMutation({
     mutationFn: () => postJson('/api/v1/news/refresh'),

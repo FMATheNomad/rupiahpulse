@@ -5,6 +5,7 @@ import HealthIndexPage from '@/components/pages/HealthIndexPage'
 import HistoryPage from '@/components/pages/HistoryPage'
 import WhyRupiahFallingPage from '@/components/pages/WhyRupiahFallingPage'
 import PredictionPage from '@/components/pages/PredictionPage'
+import CurrenciesPage from '@/components/pages/CurrenciesPage'
 import NewsPage from '@/components/pages/NewsPage'
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/history" element={<HistoryPage />} />
         <Route path="/why-rupiah-falling" element={<WhyRupiahFallingPage />} />
         <Route path="/prediction" element={<PredictionPage />} />
+        <Route path="/currencies" element={<CurrenciesPage />} />
         <Route path="/news" element={<NewsPage />} />
       </Routes>
     </Layout>

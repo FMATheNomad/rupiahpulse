@@ -8,6 +8,7 @@ const navItems = [
   { path: '/', labelKey: 'nav.beranda' },
   { path: '/health-index', labelKey: 'nav.health-index' },
   { path: '/prediction', labelKey: 'nav.prediksi' },
+  { path: '/currencies', labelKey: 'nav.currencies' },
   { path: '/history', labelKey: 'nav.riwayat' },
   { path: '/why-rupiah-falling', labelKey: 'nav.analisis' },
   { path: '/news', labelKey: 'nav.berita' },

@@ -13,6 +13,7 @@ const dict: Record<string, { id: string; en: string }> = {
   'nav.beranda': { id: 'Beranda', en: 'Home' },
   'nav.health-index': { id: 'Health Index', en: 'Health Index' },
   'nav.prediksi': { id: 'Prediksi', en: 'Prediction' },
+  'nav.currencies': { id: 'Mata Uang', en: 'Currencies' },
   'nav.riwayat': { id: 'Riwayat', en: 'History' },
   'nav.analisis': { id: 'Analisis', en: 'Analysis' },
   'nav.berita': { id: 'Berita', en: 'News' },

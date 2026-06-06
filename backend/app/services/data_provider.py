@@ -63,9 +63,30 @@ class DataProvider:
                     chunks.append(chunk)
                 return b"".join(chunks)
 
+    CURRENCY_PAIRS = [
+        "USDIDR", "SGDIDR", "MYRIDR", "CNYIDR", "JPYIDR",
+        "THBIDR", "EURIDR", "GBPIDR", "AUDIDR",
+    ]
+
     async def fetch_usd_idr(self) -> dict:
         result = await self._fetch_yahoo_json("USDIDR=X")
         return {"rate": Decimal(str(result["close"])), "source": result["source"], "fetched_at": datetime.now(timezone.utc)}
+
+    async def fetch_all_currencies(self) -> list[dict]:
+        results = []
+        for pair in self.CURRENCY_PAIRS:
+            try:
+                data = await self._fetch_yahoo_json(f"{pair}=X")
+                results.append({
+                    "pair": f"{pair[:3]}/{pair[3:]}",
+                    "rate": Decimal(str(data["close"])),
+                    "change_pct": data.get("change_pct"),
+                    "source": data["source"],
+                    "fetched_at": datetime.now(timezone.utc),
+                })
+            except Exception as e:
+                logger.warning("currency_fetch_failed", pair=pair, error=str(e))
+        return results
 
     async def _fetch_yahoo_json(self, symbol: str) -> dict:
         url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?interval=1d"
