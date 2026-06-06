@@ -88,7 +88,16 @@ export default function Layout({ children }: LayoutProps) {
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-green-400 hover:bg-green-500 text-green-900 font-semibold text-xs sm:text-sm transition-colors"
               >
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                Donate
+                trakteer.id
+              </a>
+              <a
+                href="https://buymeacoffee.com/FMATheNomad"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-semibold text-xs sm:text-sm transition-colors"
+              >
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M2 21V3h20v18H2zm2-2h16V5H4v14zm4-8l2-2h4l2 2-4 4-4-4zm3-2h2V7h-2v2zm0 4h2v-2h-2v2z"/></svg>
+                buymeacoffee
               </a>
             </div>
           </div>
