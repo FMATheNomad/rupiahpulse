@@ -84,6 +84,10 @@ export default function PricingPage() {
               ? 'Access real-time Rupiah data, Health Index, and economic indicators via simple REST API.'
               : 'Akses data Rupiah real-time, Health Index, dan indikator ekonomi via REST API yang sederhana.'}
           </p>
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 text-sm font-medium">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+            {isEn ? 'Coming soon — payment integration in progress' : 'Segera hadir — integrasi pembayaran sedang dipersiapkan'}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
