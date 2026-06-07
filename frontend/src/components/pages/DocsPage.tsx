@@ -25,6 +25,7 @@ export default function DocsPage() {
           <CardHeader><CardTitle>1. {m('Sumber Data', 'Data Sources')}</CardTitle></CardHeader>
           <CardContent className="space-y-3 text-sm leading-relaxed">
             <p><strong>USD/IDR, SGD/IDR, MYR/IDR, CNY/IDR, JPY/IDR, THB/IDR, EUR/IDR, GBP/IDR, AUD/IDR:</strong> Yahoo Finance (USDIDR=X, SGDIDR=X, dst) — <em>{m('real-time selama market forex buka (Senin-Jumat)', 'real-time during forex market hours (Mon-Fri)')}</em></p>
+            <p><strong>IHSG (Jakarta Composite Index):</strong> Yahoo Finance (^JKSE)</p>
             <p><strong>DXY (Indeks Dolar AS):</strong> Yahoo Finance (DX-Y.NYB)</p>
             <p><strong>Oil (Crude Oil):</strong> Yahoo Finance (CL=F)</p>
             <p><strong>Gold (Emas):</strong> Stooq (XAUUSD)</p>
