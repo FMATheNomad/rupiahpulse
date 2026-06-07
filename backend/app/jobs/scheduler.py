@@ -102,13 +102,15 @@ async def run_market_job():
         oil = await fetch_safe("Oil", provider.fetch_oil)
         gold = await fetch_safe("Gold", provider.fetch_gold)
         ihsg = await fetch_safe("IHSG", provider.fetch_ihsg)
+        us10y = await fetch_safe("US10Y", provider.fetch_us10y)
+        us3m = await fetch_safe("US3M", provider.fetch_us3m)
 
         now = datetime.now(timezone.utc)
         bucket = now.replace(minute=(now.minute // 5) * 5, second=0, microsecond=0)
 
         async with async_session_factory() as session:
             repo = MacroRepository(session)
-            for label, data in [("DXY", dxy), ("Oil", oil), ("Gold", gold), ("IHSG", ihsg)]:
+            for label, data in [("DXY", dxy), ("Oil", oil), ("Gold", gold), ("IHSG", ihsg), ("US10Y", us10y), ("US3M", us3m)]:
                 if data is None:
                     continue
                 await repo.upsert({

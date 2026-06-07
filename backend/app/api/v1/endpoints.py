@@ -149,6 +149,10 @@ async def compute_health_index(db: AsyncSession, lang: str = "id") -> HealthInde
     ihsg_change = await macro_repo.get_latest_value("market_ihsg_change")
     gold = await macro_repo.get_latest_value("market_gold")
     gold_change = await macro_repo.get_latest_value("market_gold_change")
+    us10y = await macro_repo.get_latest_value("market_us10y")
+    us10y_change = await macro_repo.get_latest_value("market_us10y_change")
+    us3m = await macro_repo.get_latest_value("market_us3m")
+    us3m_change = await macro_repo.get_latest_value("market_us3m_change")
 
     sentiment_stmt = select(func.avg(NewsCache.sentiment_score))
     sentiment_result = await db.execute(sentiment_stmt)
@@ -203,6 +207,8 @@ async def compute_health_index(db: AsyncSession, lang: str = "id") -> HealthInde
         "dxy": {"value": float(dxy.value) if dxy else None, "change_pct": float(dxy_change.value) if dxy_change else None},
         "oil": {"value": float(oil.value) if oil else None, "change_pct": float(oil_change.value) if oil_change else None},
         "gold": {"value": float(gold.value) if gold else None, "change_pct": float(gold_change.value) if gold_change else None},
+        "us10y": {"value": float(us10y.value) if us10y else None, "change_pct": float(us10y_change.value) if us10y_change else None},
+        "us3m": {"value": float(us3m.value) if us3m else None, "change_pct": float(us3m_change.value) if us3m_change else None},
     }
 
     return HealthIndexResponse(

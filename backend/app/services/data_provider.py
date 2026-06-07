@@ -112,6 +112,12 @@ class DataProvider:
     async def fetch_ihsg(self) -> dict:
         return await self._fetch_yahoo_json("^JKSE")
 
+    async def fetch_us10y(self) -> dict:
+        return await self._fetch_yahoo_json("^TNX")
+
+    async def fetch_us3m(self) -> dict:
+        return await self._fetch_yahoo_json("^IRX")
+
     async def fetch_oil(self) -> dict:
         return await self._fetch_yahoo_json("CL=F")
 

@@ -152,10 +152,12 @@ export default function HomePage() {
         </div>
 
         {!healthLoading && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
             {[
               { label: '🇮🇩 IHSG', value: market?.ihsg?.value, change: market?.ihsg?.change_pct },
               { label: '🇺🇸 DXY', value: market?.dxy?.value, change: market?.dxy?.change_pct },
+              { label: '🏛️ US 10Y', value: market?.us10y?.value, change: market?.us10y?.change_pct, suffix: '%' },
+              { label: '🏦 US 3M', value: market?.us3m?.value, change: market?.us3m?.change_pct, suffix: '%' },
               { label: '🛢️ Oil', value: market?.oil?.value, change: market?.oil?.change_pct },
               { label: '🥇 Gold', value: market?.gold?.value, change: market?.gold?.change_pct },
             ].map((item) => (
@@ -163,7 +165,7 @@ export default function HomePage() {
                 <CardContent className="p-3 text-center">
                   <p className="text-xs text-muted-foreground">{item.label}</p>
                   <p className="text-lg font-bold mt-0.5">
-                    {item.value?.toLocaleString('id-ID', { maximumFractionDigits: 1 }) || '-'}
+                    {(item.value ?? '-') !== '-' ? item.value.toLocaleString('id-ID', { maximumFractionDigits: 1 }) + (item.suffix || '') : '-'}
                   </p>
                   {item.change !== null && item.change !== undefined && (
                     <p className={`text-xs font-medium ${item.change >= 0 ? 'text-green-500' : 'text-red-500'}`}>
