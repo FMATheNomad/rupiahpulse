@@ -59,10 +59,10 @@ export default function Layout({ children }: LayoutProps) {
         </ErrorBoundary>
       </main>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-8 mb-4">
-        <div className="rounded-lg border border-yellow-300 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-950/40 p-4 mb-6 text-sm text-yellow-800 dark:text-yellow-200 leading-relaxed">
-          <strong>{t('banner.hey')}</strong> {t('banner.text')}
-        </div>
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-5">
+          <div className="mb-4 p-3 rounded-lg border border-yellow-300 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-950/40 text-xs text-yellow-800 dark:text-yellow-200 leading-relaxed">
+            <strong>{t('banner.hey')}</strong> {t('banner.text')}
+          </div>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-center">
             <p className="text-muted-foreground text-xs sm:text-sm">
               Find bugs, data not accurate, error loading data?
