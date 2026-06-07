@@ -27,6 +27,8 @@ export default function DocsPage() {
             <p><strong>USD/IDR, SGD/IDR, MYR/IDR, CNY/IDR, JPY/IDR, THB/IDR, EUR/IDR, GBP/IDR, AUD/IDR:</strong> Yahoo Finance (USDIDR=X, SGDIDR=X, dst) — <em>{m('real-time selama market forex buka (Senin-Jumat)', 'real-time during forex market hours (Mon-Fri)')}</em></p>
             <p><strong>IHSG (Jakarta Composite Index):</strong> Yahoo Finance (^JKSE)</p>
             <p><strong>DXY (Indeks Dolar AS):</strong> Yahoo Finance (DX-Y.NYB)</p>
+            <p><strong>US 10Y Treasury Yield:</strong> Yahoo Finance (^TNX)</p>
+            <p><strong>US 3M T-Bill Yield:</strong> Yahoo Finance (^IRX)</p>
             <p><strong>Oil (Crude Oil):</strong> Yahoo Finance (CL=F)</p>
             <p><strong>Gold (Emas):</strong> Stooq (XAUUSD)</p>
             <p><strong>Data Makro (Inflasi, Cadangan Devisa, Neraca Perdagangan):</strong> World Bank API</p>

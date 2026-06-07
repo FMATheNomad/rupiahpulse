@@ -83,23 +83,50 @@ export default function WhyRupiahFallingPage() {
                 <h3 className="text-lg font-semibold mt-6 mb-3">{t('analysis.methodology')}</h3>
                 <p className="text-muted-foreground">{t('analysis.methodology-text')}</p>
 
-                {health?.market?.ihsg?.value && (
-                  <div className="mt-6 p-4 border rounded-lg bg-muted/30">
-                    <p className="text-sm font-semibold mb-2">🇮🇩 {m('Indikator Pasar Terkait', 'Related Market Indicator')}</p>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">IHSG</span>
-                      <span className="font-mono font-medium">{Number(health.market.ihsg.value).toLocaleString('id-ID', { maximumFractionDigits: 0 })}</span>
-                      {health.market.ihsg.change_pct !== null && health.market.ihsg.change_pct !== undefined && (
-                        <span className={`text-xs font-medium ${health.market.ihsg.change_pct >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                          {health.market.ihsg.change_pct >= 0 ? '+' : ''}{health.market.ihsg.change_pct.toFixed(2)}%
-                        </span>
-                      )}
+                <div className="mt-6 p-4 border rounded-lg bg-muted/30 space-y-4">
+                  <p className="text-sm font-semibold">📊 {m('Indikator Pasar Terkait', 'Related Market Indicators')}</p>
+
+                  {health?.market?.ihsg?.value && (
+                    <div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">🇮🇩 IHSG</span>
+                        <span className="font-mono font-medium">{Number(health.market.ihsg.value).toLocaleString('id-ID', { maximumFractionDigits: 0 })}</span>
+                        {health.market.ihsg.change_pct !== null && health.market.ihsg.change_pct !== undefined && (
+                          <span className={`text-xs font-medium ${health.market.ihsg.change_pct >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                            {health.market.ihsg.change_pct >= 0 ? '+' : ''}{health.market.ihsg.change_pct.toFixed(2)}%
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {m('IHSG bergerak berlawanan arah dengan USD/IDR — saat Rupiah melemah, biasanya IHSG terkoreksi karena investor asing menarik modal.', 'IHSG moves inversely to USD/IDR — when Rupiah weakens, IHSG typically corrects as foreign investors pull capital.')}
+                      </p>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-2">
-                      {m('IHSG bergerak berlawanan arah dengan USD/IDR — saat Rupiah melemah, biasanya IHSG terkoreksi karena investor asing menarik modal.', 'IHSG moves inversely to USD/IDR — when Rupiah weakens, IHSG typically corrects as foreign investors pull capital.')}
-                    </p>
-                  </div>
-                )}
+                  )}
+
+                  {health?.market?.us10y?.value && (
+                    <div className="border-t pt-3">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">🏛️ US 10Y Treasury</span>
+                        <span className="font-mono font-medium">{health.market.us10y.value.toFixed(2)}%</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {m('Yield Treasury AS 10 tahun — acuan global suku bunga. Naiknya yield = tekanan untuk Rupiah.', 'US 10Y Treasury yield — global interest rate benchmark. Rising yield = pressure on Rupiah.')}
+                      </p>
+                    </div>
+                  )}
+
+                  {health?.market?.us3m?.value && (
+                    <div className="border-t pt-3">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">🏦 US 3M T-Bill</span>
+                        <span className="font-mono font-medium">{health.market.us3m.value.toFixed(2)}%</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {m('Imbal hasil Treasury AS 3 bulan — proksi suku bunga acuan The Fed. Mempengaruhi aliran modal asing ke Indonesia.', 'US 3-month Treasury Bill yield — proxy for Fed rate. Affects foreign capital flows to Indonesia.')}
+                      </p>
+                    </div>
+                  )}
+                </div>
               </article>
             )}
           </CardContent>
