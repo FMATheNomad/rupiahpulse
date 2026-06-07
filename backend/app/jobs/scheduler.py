@@ -90,35 +90,46 @@ async def run_market_job():
     result = JobResult("market_fetch")
     try:
         provider = DataProvider()
-        dxy = await provider.fetch_dxy()
-        oil = await provider.fetch_oil()
-        gold = await provider.fetch_gold()
-        ihsg = await provider.fetch_ihsg()
+
+        async def fetch_safe(label, fn):
+            try:
+                return await fn()
+            except Exception as e:
+                logger.warning("market_fetch_skip", indicator=label, error=str(e))
+                return None
+
+        dxy = await fetch_safe("DXY", provider.fetch_dxy)
+        oil = await fetch_safe("Oil", provider.fetch_oil)
+        gold = await fetch_safe("Gold", provider.fetch_gold)
+        ihsg = await fetch_safe("IHSG", provider.fetch_ihsg)
+
         now = datetime.now(timezone.utc)
         bucket = now.replace(minute=(now.minute // 5) * 5, second=0, microsecond=0)
 
         async with async_session_factory() as session:
             repo = MacroRepository(session)
-            for indicator, data in [("DXY", dxy), ("Oil", oil), ("Gold", gold), ("IHSG", ihsg)]:
+            for label, data in [("DXY", dxy), ("Oil", oil), ("Gold", gold), ("IHSG", ihsg)]:
+                if data is None:
+                    continue
                 await repo.upsert({
                     "timestamp_bucket": bucket,
-                    "indicator": f"market_{indicator.lower()}",
+                    "indicator": f"market_{label.lower()}",
                     "value": Decimal(str(data["close"])),
-                    "unit": "index" if indicator == "DXY" else "usd",
+                    "unit": "index" if label in ("DXY", "IHSG") else "usd",
                     "source": data["source"],
                 })
                 if data.get("change_pct") is not None:
                     await repo.upsert({
                         "timestamp_bucket": bucket,
-                        "indicator": f"market_{indicator.lower()}_change",
+                        "indicator": f"market_{label.lower()}_change",
                         "value": Decimal(str(data["change_pct"])),
                         "unit": "pct",
                         "source": data["source"],
                     })
             await session.commit()
 
-        logger.info("market_job_completed", dxy=dxy["close"], oil=oil["close"])
-    except DataProviderError as e:
+        logger.info("market_job_completed", dxy=dxy["close"] if dxy else None, ihsg=ihsg["close"] if ihsg else None)
+    except Exception as e:
         result.fail(str(e))
     return result
 
