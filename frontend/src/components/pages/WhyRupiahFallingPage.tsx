@@ -96,7 +96,7 @@ export default function WhyRupiahFallingPage() {
                       )}
                     </div>
                     <p className="text-xs text-muted-foreground mt-2">
-                      IHSG bergerak berlawanan arah dengan USD/IDR — saat Rupiah melemah, biasanya IHSG terkoreksi karena investor asing menarik modal.
+                      {m('IHSG bergerak berlawanan arah dengan USD/IDR — saat Rupiah melemah, biasanya IHSG terkoreksi karena investor asing menarik modal.', 'IHSG moves inversely to USD/IDR — when Rupiah weakens, IHSG typically corrects as foreign investors pull capital.')}
                     </p>
                   </div>
                 )}
