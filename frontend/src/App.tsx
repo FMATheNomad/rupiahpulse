@@ -8,6 +8,7 @@ import PredictionPage from '@/components/pages/PredictionPage'
 import CurrenciesPage from '@/components/pages/CurrenciesPage'
 import DocsPage from '@/components/pages/DocsPage'
 import PricingPage from '@/components/pages/PricingPage'
+import TermsPage from '@/components/pages/TermsPage'
 import NewsPage from '@/components/pages/NewsPage'
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/currencies" element={<CurrenciesPage />} />
         <Route path="/docs" element={<DocsPage />} />
         <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/terms" element={<TermsPage />} />
         <Route path="/news" element={<NewsPage />} />
       </Routes>
     </Layout>

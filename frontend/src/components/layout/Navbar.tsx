@@ -108,7 +108,7 @@ export function Footer() {
         <p className="mt-2 text-xs text-muted-foreground">
           <Link to="/docs" className="hover:text-foreground transition-colors">Documentation</Link>
           {' · '}
-          <a href="https://polar.sh/rupiahpulse" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">API Access</a>
+          <Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>
           {' · '}
           <Link to="/news" className="hover:text-foreground transition-colors">News</Link>
           {' · '}
