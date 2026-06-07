@@ -4,7 +4,8 @@ import { useLang } from '@/lib/i18n'
 import { Card, CardHeader, CardTitle, CardContent, Badge, ErrorState } from '@/components/ui'
 
 export default function WhyRupiahFallingPage() {
-  const { t } = useLang()
+  const { t, locale } = useLang()
+  const m = (id: string, en: string) => locale === 'en' ? en : id
   const { data: healthData, isLoading, error } = useHealthIndex()
   const health = healthData?.data
 
@@ -81,6 +82,24 @@ export default function WhyRupiahFallingPage() {
 
                 <h3 className="text-lg font-semibold mt-6 mb-3">{t('analysis.methodology')}</h3>
                 <p className="text-muted-foreground">{t('analysis.methodology-text')}</p>
+
+                {health?.market?.ihsg?.value && (
+                  <div className="mt-6 p-4 border rounded-lg bg-muted/30">
+                    <p className="text-sm font-semibold mb-2">🇮🇩 {m('Indikator Pasar Terkait', 'Related Market Indicator')}</p>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">IHSG</span>
+                      <span className="font-mono font-medium">{Number(health.market.ihsg.value).toLocaleString('id-ID', { maximumFractionDigits: 0 })}</span>
+                      {health.market.ihsg.change_pct !== null && health.market.ihsg.change_pct !== undefined && (
+                        <span className={`text-xs font-medium ${health.market.ihsg.change_pct >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                          {health.market.ihsg.change_pct >= 0 ? '+' : ''}{health.market.ihsg.change_pct.toFixed(2)}%
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      IHSG bergerak berlawanan arah dengan USD/IDR — saat Rupiah melemah, biasanya IHSG terkoreksi karena investor asing menarik modal.
+                    </p>
+                  </div>
+                )}
               </article>
             )}
           </CardContent>
