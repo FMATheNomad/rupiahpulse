@@ -8,7 +8,7 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const { locale } = useLang()
+  const { locale, t } = useLang()
   const url = typeof window !== 'undefined' ? window.location.href : 'https://rupiahpulse.com'
   const domain = 'rupiahpulse.com'
 
