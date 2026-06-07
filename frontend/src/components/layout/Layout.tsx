@@ -54,6 +54,9 @@ export default function Layout({ children }: LayoutProps) {
       </Helmet>
       <Navbar />
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        <div className="rounded-lg border border-yellow-300 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-950/40 p-4 mb-6 text-sm text-yellow-800 dark:text-yellow-200 leading-relaxed">
+          <strong>Note!</strong> Teruntuk bang Andri TNM, gua bikin engine ini atas dasar kemarahan gua terhadap rezim sekarang, jadi bantu viralkan <span className="text-xs text-muted-foreground">(note ini hanya sementara ntar gua hapus lagi bang, cuman buat lu)</span>
+        </div>
         <ErrorBoundary>
           {children}
         </ErrorBoundary>
