@@ -11,6 +11,7 @@ from app.models.currency import CurrencySnapshot
 from app.models.explanation import ExplanationCache
 from app.models.news import NewsCache
 from app.schemas.currency import CurrencySnapshotResponse, CurrencyHistoryResponse, CurrencyRateResponse
+from app.schemas.health import HealthIndexResponse, FactorBreakdown, HealthIndexHistoryResponse, MarketItem
 from app.schemas.health import HealthIndexResponse, FactorBreakdown, HealthIndexHistoryResponse
 from app.schemas.explanation import ExplanationResponse
 from app.schemas.news import NewsResponse
@@ -144,6 +145,11 @@ async def compute_health_index(db: AsyncSession, lang: str = "id") -> HealthInde
     fx_reserves = await macro_repo.get_latest_value("macro_fx_reserves", lookback_hours=720)
     trade_balance = await macro_repo.get_latest_value("macro_trade_balance", lookback_hours=720)
 
+    ihsg = await macro_repo.get_latest_value("market_ihsg")
+    ihsg_change = await macro_repo.get_latest_value("market_ihsg_change")
+    gold = await macro_repo.get_latest_value("market_gold")
+    gold_change = await macro_repo.get_latest_value("market_gold_change")
+
     sentiment_stmt = select(func.avg(NewsCache.sentiment_score))
     sentiment_result = await db.execute(sentiment_stmt)
     avg_sentiment = sentiment_result.scalar() or 0.0
@@ -192,6 +198,13 @@ async def compute_health_index(db: AsyncSession, lang: str = "id") -> HealthInde
         for f in computed
     ]
 
+    market = {
+        "ihsg": {"value": float(ihsg.value) if ihsg else None, "change_pct": float(ihsg_change.value) if ihsg_change else None},
+        "dxy": {"value": float(dxy.value) if dxy else None, "change_pct": float(dxy_change.value) if dxy_change else None},
+        "oil": {"value": float(oil.value) if oil else None, "change_pct": float(oil_change.value) if oil_change else None},
+        "gold": {"value": float(gold.value) if gold else None, "change_pct": float(gold_change.value) if gold_change else None},
+    }
+
     return HealthIndexResponse(
         score=score,
         category=category,
@@ -200,6 +213,7 @@ async def compute_health_index(db: AsyncSession, lang: str = "id") -> HealthInde
         timestamp_bucket=latest_currency.timestamp_bucket,
         factors=factor_breakdowns,
         explanation=explanation,
+        market=market,
     )
 
 

@@ -14,6 +14,11 @@ class FactorBreakdown(BaseModel):
     change_24h_pct: float | None = None
 
 
+class MarketItem(BaseModel):
+    value: float | None = None
+    change_pct: float | None = None
+
+
 class HealthIndexResponse(BaseModel):
     score: int
     category: str
@@ -22,6 +27,7 @@ class HealthIndexResponse(BaseModel):
     timestamp_bucket: datetime
     factors: list[FactorBreakdown]
     explanation: str | None = None
+    market: dict | None = None
 
 
 class HealthIndexHistoryResponse(BaseModel):

@@ -93,12 +93,13 @@ async def run_market_job():
         dxy = await provider.fetch_dxy()
         oil = await provider.fetch_oil()
         gold = await provider.fetch_gold()
+        ihsg = await provider.fetch_ihsg()
         now = datetime.now(timezone.utc)
         bucket = now.replace(minute=(now.minute // 5) * 5, second=0, microsecond=0)
 
         async with async_session_factory() as session:
             repo = MacroRepository(session)
-            for indicator, data in [("DXY", dxy), ("Oil", oil), ("Gold", gold)]:
+            for indicator, data in [("DXY", dxy), ("Oil", oil), ("Gold", gold), ("IHSG", ihsg)]:
                 await repo.upsert({
                     "timestamp_bucket": bucket,
                     "indicator": f"market_{indicator.lower()}",

@@ -17,6 +17,7 @@ export default function HomePage() {
   const factors = health?.factors || []
   const score = health?.score ?? 50
   const category = health?.category || 'Neutral'
+  const market = health?.market || {}
 
   const catLabel = category === 'Strong' ? 'Strong' : category === 'Weak' ? 'Weak' : 'Neutral'
 
@@ -149,6 +150,31 @@ export default function HomePage() {
             </CardContent>
           </Card>
         </div>
+
+        {!healthLoading && (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { label: '🇮🇩 IHSG', value: market?.ihsg?.value, change: market?.ihsg?.change_pct },
+              { label: '🇺🇸 DXY', value: market?.dxy?.value, change: market?.dxy?.change_pct },
+              { label: '🛢️ Oil', value: market?.oil?.value, change: market?.oil?.change_pct },
+              { label: '🥇 Gold', value: market?.gold?.value, change: market?.gold?.change_pct },
+            ].map((item) => (
+              <Card key={item.label}>
+                <CardContent className="p-3 text-center">
+                  <p className="text-xs text-muted-foreground">{item.label}</p>
+                  <p className="text-lg font-bold mt-0.5">
+                    {item.value?.toLocaleString('id-ID', { maximumFractionDigits: 1 }) || '-'}
+                  </p>
+                  {item.change !== null && item.change !== undefined && (
+                    <p className={`text-xs font-medium ${item.change >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                      {item.change >= 0 ? '+' : ''}{item.change.toFixed(2)}%
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <GaugeChart score={score} loading={healthLoading} />
